@@ -1,0 +1,2110 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"print",
+				"print_indent"
+			],
+			[
+				"pretty",
+				"pretty_print_to_stream"
+			],
+			[
+				"ASTPRe",
+				"ASTPrettyPrinter"
+			],
+			[
+				"state",
+				"stateful_uuid_times_two"
+			],
+			[
+				"stateful",
+				"stateful_uuid"
+			],
+			[
+				"Condi",
+				"ConditionalTerm"
+			],
+			[
+				"Condit",
+				"ConditionalFactor"
+			],
+			[
+				"unde",
+				"undecided_string"
+			],
+			[
+				"Prefix",
+				"PrefixExprAST"
+			],
+			[
+				"extra",
+				"extra_arg_string"
+			],
+			[
+				"retu",
+				"return_type"
+			],
+			[
+				"FunctionC",
+				"FunctionCallExpr        Struct (tmp_3ccg9) : pub struct FunctionCallExpr {         "
+			],
+			[
+				"In",
+				"InfixExpr              Struct (tmpgeg2g7) : pub struct InfixExpr {                   "
+			],
+			[
+				"return",
+				"return_expr"
+			],
+			[
+				"Lit",
+				"LiteralExpr         Struct (tmp_bae55) : struct LiteralExpr {      "
+			],
+			[
+				"Abstract",
+				"AbstractFloat   EnumVariant (types.rs) : AbstractFloat,  "
+			],
+			[
+				"Abstra",
+				"AbstractInteger EnumVariant (types.rs) : AbstractInteger,"
+			],
+			[
+				"new_b",
+				"new_bool_literal"
+			],
+			[
+				"Lite",
+				"Literal"
+			],
+			[
+				"Brack",
+				"BracketedExpr"
+			],
+			[
+				"FnDefini",
+				"FnDefinitionExpr"
+			],
+			[
+				"Con",
+				"ConcreteBool    EnumVariant (types.rs) : ConcreteBool,       "
+			],
+			[
+				"Typ",
+				"TypeResult Type (types.rs) : pub type TypeResult<T> = Result<T, TypeError>"
+			],
+			[
+				"TypeR",
+				"TypeError     Type (types.rs) : pub type TypeError = String"
+			],
+			[
+				"AST",
+				"ASTVisitor Trait (ast.rs) : pub trait ASTVisitor<E> {"
+			],
+			[
+				"Abstr",
+				"AbstractInteger EnumVariant (types.rs) : AbstractInteger,    "
+			],
+			[
+				"vi",
+				"visit_ast_node"
+			],
+			[
+				"trac",
+				"tracker_uuid"
+			],
+			[
+				"Abs",
+				"AbstractFloat   EnumVariant (tmpl17c2y) : AbstractFloat,                          "
+			],
+			[
+				"Concr",
+				"ConcreteString  EnumVariant (tmp9q2j5l) : ConcreteString,                         "
+			],
+			[
+				"bottom",
+				"AbstractBottom  EnumVariant (type_checker.rs) : AbstractBottom,                         "
+			],
+			[
+				"infe",
+				"infer_types"
+			],
+			[
+				"type_",
+				"type_tracker"
+			],
+			[
+				"Concre",
+				"ConcreteBoolean EnumVariant (tmpy3_lhy) : ConcreteBoolean,                        "
+			],
+			[
+				"Abst",
+				"AbstractInteger EnumVariant (tmpbj8aux) : AbstractInteger,"
+			],
+			[
+				"new",
+				"new_const Function (tmpigpjwp) : pub fn new_const(type_: RawType) -> TypeInfo {"
+			],
+			[
+				"is_",
+				"is_number   Function (tmp1472de) : fn is_number(&self) -> bool                            "
+			],
+			[
+				"Conc",
+				"ConcreteI"
+			],
+			[
+				"pare",
+				"parent_id"
+			],
+			[
+				"TypeTra",
+				"TypeTrackerList"
+			],
+			[
+				"inpt",
+				"input_file_path"
+			],
+			[
+				"ASTEx",
+				"ASTExpr"
+			],
+			[
+				"le",
+				"left_string"
+			],
+			[
+				"split_",
+				"split_left"
+			],
+			[
+				"has",
+				"has_no_sigil"
+			],
+			[
+				"spl",
+				"split_left"
+			],
+			[
+				"sigil",
+				"sigil_string"
+			],
+			[
+				"sigi",
+				"sigil_string"
+			],
+			[
+				"ends",
+				"ends_with"
+			],
+			[
+				"left",
+				"left_string"
+			],
+			[
+				"TokenOpe",
+				"TokenOpenCurlyBracket"
+			],
+			[
+				"else",
+				"else_block"
+			],
+			[
+				"then",
+				"then_block"
+			],
+			[
+				"Ope",
+				"OperatorPrecedence"
+			],
+			[
+				"TokenClo",
+				"TokenCloseBracket"
+			],
+			[
+				"TokenOp",
+				"TokenOpenBracket"
+			],
+			[
+				"TokenOpen",
+				"TokenOpenCurlyBracket"
+			],
+			[
+				"TokenClose",
+				"TokenCloseCurlyBracket"
+			],
+			[
+				"shou",
+				"should_put_comma"
+			],
+			[
+				"arg",
+				"arg_list"
+			],
+			[
+				"func",
+				"function_name"
+			],
+			[
+				"ar",
+				"arg_list"
+			],
+			[
+				"Func",
+				"FunctionCallExpr"
+			],
+			[
+				"Wi",
+				"WirePacket"
+			],
+			[
+				"Pac",
+				"PacketVal"
+			],
+			[
+				"O",
+				"OutputVal"
+			],
+			[
+				"color-",
+				"color-highlight"
+			],
+			[
+				"colo",
+				"color-highlight"
+			],
+			[
+				"paddn",
+				"padding-left"
+			],
+			[
+				"padding",
+				"padding-left"
+			],
+			[
+				"font",
+				"font-weight"
+			],
+			[
+				"string",
+				"string_builder"
+			],
+			[
+				"DATUMT",
+				"DATUM_TYPE_LAMBDA"
+			],
+			[
+				"tra",
+				"training_request_string"
+			],
+			[
+				"tr",
+				"training_request_string"
+			],
+			[
+				"nu",
+				"null_memory_location"
+			],
+			[
+				"str",
+				"string_begin_location"
+			],
+			[
+				"mul",
+				"multiple_number"
+			],
+			[
+				"get",
+				"getWithLens"
+			],
+			[
+				"lens",
+				"lensInner"
+			],
+			[
+				"ge",
+				"getter"
+			],
+			[
+				"len",
+				"lensOuter"
+			],
+			[
+				"inn",
+				"innerGetter"
+			],
+			[
+				"appli",
+				"AppliedLens"
+			],
+			[
+				"mem",
+				"member"
+			],
+			[
+				"app",
+				"appliedLens"
+			],
+			[
+				"sett",
+				"setteFn"
+			],
+			[
+				"set",
+				"setWithLens"
+			],
+			[
+				"c",
+				"createLens"
+			],
+			[
+				"member",
+				"memberLens"
+			],
+			[
+				"now",
+				"nowPlayingSong"
+			],
+			[
+				"gray",
+				"gray-light"
+			],
+			[
+				"gra",
+				"gray-dark"
+			],
+			[
+				"se",
+				"seek_height"
+			],
+			[
+				"margin",
+				"margin"
+			],
+			[
+				"paddin",
+				"padding-top"
+			],
+			[
+				"col",
+				"color-base"
+			],
+			[
+				"margin-",
+				"margin-top"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"son",
+				"song"
+			],
+			[
+				"file",
+				"filePath"
+			],
+			[
+				"de",
+				"deferred"
+			],
+			[
+				"def",
+				"deferred"
+			],
+			[
+				"highli",
+				"highlight-secondary"
+			],
+			[
+				"bac",
+				"background-color"
+			],
+			[
+				"bacl",
+				"background-color"
+			],
+			[
+				"da",
+				"gray-dark"
+			],
+			[
+				"font-",
+				"font-family"
+			],
+			[
+				"Vie",
+				"ViewModel"
+			],
+			[
+				"hi",
+				"highlight-dark"
+			],
+			[
+				"bas",
+				"color-base"
+			],
+			[
+				"back",
+				"background-color"
+			],
+			[
+				"high",
+				"highlight-light"
+			],
+			[
+				"color",
+				"color-base"
+			],
+			[
+				"sho",
+				"showPoint"
+			],
+			[
+				"poin",
+				"point_lines"
+			],
+			[
+				"sp",
+				"splitString"
+			],
+			[
+				"tre",
+				"tree_heights"
+			],
+			[
+				"grow",
+				"growTreeOnce"
+			],
+			[
+				"grot",
+				"growTreeIter"
+			],
+			[
+				"gr",
+				"growTreeFully"
+			],
+			[
+				"g",
+				"growTreeFully"
+			],
+			[
+				"tree_",
+				"tree_years"
+			],
+			[
+				"res",
+				"response_page	statement"
+			],
+			[
+				"passwoir",
+				"password_file_path"
+			],
+			[
+				"clien",
+				"clientloginfilter"
+			],
+			[
+				"send",
+				"send_nth_login"
+			],
+			[
+				"login",
+				"login_promise"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/home/bollu/dotfiles/scripts/auto-net-reload.py",
+			"settings":
+			{
+				"buffer_size": 4558,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/Python/Python.sublime-build",
+	"command_palette":
+	{
+		"height": 194.0,
+		"selected_items":
+		[
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"goto de",
+				"C++YouCompleteMe: Goto declaration"
+			],
+			[
+				"side",
+				"View: Toggle Side Bar"
+			],
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"to spaces",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"conve",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"C++",
+				"Set Syntax: C++"
+			],
+			[
+				"comment",
+				"Toggle Block Comment"
+			],
+			[
+				"rien",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"cloj",
+				"Set Syntax: Clojure"
+			],
+			[
+				"show all ",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"linter",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"lint",
+				"SublimeLinter: Choose Mark Style"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"to spac",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"toggle si",
+				"View: Toggle Side Bar"
+			],
+			[
+				"toggle side",
+				"View: Toggle Side Bar"
+			],
+			[
+				"ADD BO",
+				"SublimeBookmarks: Add Bookmark"
+			],
+			[
+				"block",
+				"Toggle Block Comment"
+			],
+			[
+				"block ",
+				"Toggle Block Comment"
+			],
+			[
+				"toggle is",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"sideb",
+				"View: Toggle Side Bar"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"rust",
+				"Set Syntax: Rust"
+			],
+			[
+				"c++",
+				"Set Syntax: C++"
+			],
+			[
+				"ri",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"high",
+				"BracketHighlighter: Toggle High Visibility Mode"
+			],
+			[
+				"match",
+				"BracketHighlighter: Match Brackets (ignore threshold)"
+			],
+			[
+				"matching",
+				"BracketHighlighter: Match Brackets (ignore threshold)"
+			],
+			[
+				"set",
+				"Set Syntax: orgmode"
+			],
+			[
+				"set s",
+				"Set Syntax: orgmode"
+			],
+			[
+				"isnta",
+				"Package Control: Install Package"
+			],
+			[
+				"set s mark",
+				"Set Syntax: Markdown Extended"
+			],
+			[
+				"hih",
+				"BracketHighlighter: Toggle High Visibility Mode"
+			],
+			[
+				"brackehi ",
+				"BracketHighlighter: Toggle High Visibility Mode"
+			],
+			[
+				"keybind",
+				"Preferences: Key Bindings - User"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"vinta",
+				"Vintageous: Open .vintageousrc"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"settings u",
+				"Preferences: Settings - User"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"sidebar",
+				"View: Toggle Side Bar"
+			],
+			[
+				"toggl",
+				"View: Toggle Side Bar"
+			],
+			[
+				"block com	",
+				"Toggle Block Comment"
+			],
+			[
+				"blo",
+				"Toggle Block Comment"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove pac",
+				"Package Control: Remove Package"
+			],
+			[
+				"rei",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"open",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"toggle sid",
+				"View: Toggle Side Bar"
+			],
+			[
+				"latexing",
+				"LaTeXing: New Environment"
+			],
+			[
+				"latex",
+				"LaTeXing: Fill"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"lisp",
+				"Set Syntax: Lisp"
+			],
+			[
+				"set syntax c+",
+				"Set Syntax: C++"
+			],
+			[
+				"set syntax C++",
+				"Set Syntax: C++"
+			],
+			[
+				"set C++",
+				"Set Syntax: C++"
+			],
+			[
+				"reind",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"rename ",
+				"ANF: Rename File"
+			],
+			[
+				"new file",
+				"ANF: New File"
+			],
+			[
+				"Rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"blc",
+				"Toggle Block Comment"
+			],
+			[
+				"ren",
+				"ANF: Rename File"
+			],
+			[
+				"oggle si",
+				"View: Toggle Side Bar"
+			],
+			[
+				"reu",
+				"Preferences: Settings - User"
+			],
+			[
+				"togg",
+				"View: Toggle Side Bar"
+			],
+			[
+				"toggle",
+				"View: Toggle Side Bar"
+			],
+			[
+				"toggle s",
+				"View: Toggle Side Bar"
+			],
+			[
+				"reinde",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"disable pac",
+				"Package Control: Disable Package"
+			],
+			[
+				"set syntax ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"toggle me",
+				"View: Toggle Menu"
+			],
+			[
+				"prefer",
+				"Preferences: Settings - User"
+			],
+			[
+				"toggle sta",
+				"View: Toggle Status Bar"
+			],
+			[
+				"anaconda nex",
+				"Anaconda: Next lint error"
+			],
+			[
+				"aa",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"toggle m	",
+				"View: Toggle Menu"
+			],
+			[
+				"settings",
+				"Preferences: Settings - User"
+			],
+			[
+				"toggle menu",
+				"View: Toggle Menu"
+			],
+			[
+				"high visi",
+				"BracketHighlighter: Toggle High Visibility Mode"
+			],
+			[
+				"sublimelint set the",
+				"SublimeLinter: Choose Gutter Theme"
+			],
+			[
+				"brack",
+				"BracketHighlighter: Toggle High Visibility Mode"
+			],
+			[
+				"anaconda ",
+				"Anaconda: Display object docs"
+			],
+			[
+				"anaconda",
+				"Anaconda: Autoformat PEP8 Errors"
+			],
+			[
+				"enable lintin",
+				"Anaconda: Enable linting on this file"
+			],
+			[
+				"anaconds ",
+				"Anaconda: Disable linting on this file"
+			],
+			[
+				"linter d",
+				"SublimeLinter: Disable Linter"
+			],
+			[
+				"codeintel ",
+				"SublimeCodeIntel: Reset"
+			],
+			[
+				"inden",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"next err",
+				"SublimeLinter: Next Error"
+			],
+			[
+				"reindent",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"reon",
+				"SublimeLinter: Report (Open Files)"
+			],
+			[
+				"set theme",
+				"SublimeLinter: Choose Gutter Theme"
+			],
+			[
+				"sublime linter theme",
+				"SublimeLinter: Choose Gutter Theme"
+			],
+			[
+				"sublimelin",
+				"SublimeLinter: Next Error"
+			],
+			[
+				"insa",
+				"Indentation: Convert to Spaces"
+			],
+			[
+				"ubsta",
+				"SublimeLinter: Show All Errors"
+			],
+			[
+				"minima",
+				"View: Toggle Minimap"
+			],
+			[
+				"minimap",
+				"View: Toggle Minimap"
+			],
+			[
+				"set s css",
+				"Set Syntax: SCSS"
+			],
+			[
+				"sidebar disa",
+				"Side Bar: Disable Syncing"
+			],
+			[
+				"markdow",
+				"Set Syntax: Markdown"
+			],
+			[
+				"markdown",
+				"Set Syntax: Markdown"
+			],
+			[
+				"mini",
+				"View: Toggle Minimap"
+			],
+			[
+				"toggle min",
+				"View: Toggle Minimap"
+			],
+			[
+				"tggle si",
+				"View: Toggle Side Bar"
+			],
+			[
+				"to tabs",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"pythn",
+				"Set Syntax: Python"
+			],
+			[
+				"color",
+				"Toggle Colorcode on this view"
+			],
+			[
+				"json",
+				"Set Syntax: JSON"
+			],
+			[
+				"htmlpr",
+				"HTMLPrettify"
+			],
+			[
+				"htmlpre",
+				"HTMLPrettify"
+			],
+			[
+				"angulat",
+				"AngularJS: Look Up Definition"
+			],
+			[
+				"colors",
+				"Tweak Colorcode to current color scheme"
+			],
+			[
+				"nsta",
+				"Package Control: Install Package"
+			],
+			[
+				"to tab",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"toggle ta",
+				"View: Toggle Tabs"
+			],
+			[
+				"codeintel",
+				"SublimeCodeIntel: Reset"
+			],
+			[
+				"set syntax pythn",
+				"Set Syntax: Python"
+			],
+			[
+				"convert to ta",
+				"Indentation: Convert to Tabs"
+			],
+			[
+				"Ren",
+				"ANF: Rename File"
+			],
+			[
+				"reni",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"javasc",
+				"Set Syntax: JavaScript"
+			]
+		],
+		"width": 507.0
+	},
+	"console":
+	{
+		"height": 312.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": true,
+		"show_tabs": true,
+		"side_bar_visible": false,
+		"status_bar_visible": true
+	},
+	"expanded_folders":
+	[
+		"/home/bollu/prog/cpp-achilles",
+		"/home/bollu/prog/cpp-achilles/bin",
+		"/home/bollu/prog/cpp-achilles/src"
+	],
+	"file_history":
+	[
+		"/home/bollu/prog/cpp-achilles/src/ast.cpp",
+		"/home/bollu/prog/cpp-achilles/src/tokenizer.h",
+		"/home/bollu/prog/cpp-achilles/src/tokenizer.cpp",
+		"/home/bollu/prog/cpp-achilles/src/ast.h",
+		"/home/bollu/prog/cpp-achilles/makefile",
+		"/home/bollu/prog/cpp-achilles/src/pretty_print.h",
+		"/home/bollu/prog/cpp-achilles/src/main.cpp",
+		"/home/bollu/prog/cpp-achilles/.ycm_extra_conf.py",
+		"/home/bollu/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
+		"/home/bollu/.config/sublime-text-3/Packages/User/C++YouCompleteMe.sublime-settings",
+		"/home/bollu/powerline-shell/config.py",
+		"/home/bollu/.config/sublime-text-3/Packages/C++YouCompleteMe/C++YouCompleteMe.sublime-settings",
+		"/home/bollu/prog/cpp-achilles/.gitignore",
+		"/home/bollu/.config/sublime-text-3/Packages/C++YouCompleteMe/Default (Linux).sublime-keymap",
+		"/home/bollu/prog/cpp-achilles/ycm_extra_conf.py",
+		"/home/bollu/prog/cpp-achilles/.ropeproject/config.py",
+		"/home/bollu/prog/cpp-achilles/cpp-achilles.sublime-project",
+		"/home/bollu/prog/gsoc-vispy/vispy/appveyor.yml",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/gloo/animate_shape.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/backends/_ipynb_static.py",
+		"/home/bollu/.vimrc",
+		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
+		"/home/bollu/prog/random-snippets/haskell-types/state.hs",
+		"/home/bollu/scripts/auto-net-reload.py",
+		"/home/bollu/.config/fish/config.fish",
+		"/home/bollu/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/unstructured_2d.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/visuals/line_plot.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/tests/test_polygon.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/tests/test_triangulation.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_buffer.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_context.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_framebuffer.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_glir.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_globject.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_program.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_texture.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_util.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/texture.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/line_plot.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/backends/_ipynb_util.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/color/color_array.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/codegen/createglapi.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/visuals/image_visual.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/color/colormap.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/image.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/scene/colored_line.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/io/image.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/ext/ordereddict.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/modular_mesh.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/doc/Makefile",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/_default_app.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/color/tests/test_color.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/_runners.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/realtime_signals.py",
+		"/home/bollu/tmp/line_plot_test.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/README.rst",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/tutorial/gloo/rotating_quad.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/line/line.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/terrain.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/LICENSE.txt",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/line/vertex.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/scene/nested_viewbox.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/inputhook.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_context.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_backends.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/util/wrappers.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/wrappers.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/codegen/headers/webgl.idl",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/color/color_space.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/codegen/annotations.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/galaxy/galaxy.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/visuals/image_transforms.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/visuals/tube.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/io/mesh.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/io/__init__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/__init__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy.proxy.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/scene/visuals.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/gloo/animate_images.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/doc/themes/scikit-image/search.html",
+		"/home/bollu/prog/gsoc-vispy/vispy/CONTRIBUTORS.txt",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/__init__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/markers.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/visual.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy.egg-info/SOURCES.txt",
+		"/home/bollu/prog/gsoc-vispy/vispy/doc/index.rst",
+		"/home/bollu/prog/gsoc-vispy/vispy/doc/color.rst",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/galaxy.py",
+		"/home/bollu/.lein/profiles.clj",
+		"/home/bollu/.lein/profiles.clj.",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/plotting/scatter.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/plotting/export.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/_testing.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/gloo/start.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/codegen/headers/egl.h",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/galaxy/galaxy.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/make/make.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/transforms/_util.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/make/__main__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/__init__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/rect.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/make/install_python.ps1",
+		"/home/bollu/prog/gsoc-vispy/vispy/make/__init__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/io/tests/test_io.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/tests/test_testing.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/tests/__init__.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/doc/make.bat",
+		"/home/bollu/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
+		"/home/bollu/prog/gsoc-vispy/vispy/Makefile",
+		"/home/bollu/tmp/make/make.py",
+		"/home/bollu/tmp/make/__main__",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/galaxy/galaxy_specrend.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/program.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/lorenz.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/galaxy/galaxy_simulation.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_app.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_simultaneous.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_use_gloo.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/examples/tutorial/gl/fireworks.py",
+		"/home/bollu/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
+		"/home/bollu/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/glir.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/tests/test_meshdata.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/tests/test_generation.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_qt.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_interactive.py",
+		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/components/texture.py"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 102.0,
+		"where_history":
+		[
+			"*.py",
+			"examples/*",
+			"test/*",
+			"*",
+			"*.py",
+			"vispy/examples/",
+			"",
+			"vispy/examples/",
+			"vispy/gloo/tests/",
+			"vispy/**.py",
+			"*.rs",
+			"*.cpp, *.c, *.h",
+			"ion-attack/*",
+			"campus-radio/*",
+			"**/bollu/**",
+			"gobot.go, jsonMapping.go, pathing.go, strategy.go, types.go",
+			"gobot.go, jsonMapping.go, strategy.go, types.go",
+			"*.go",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"AFTER_LOGIN_SLEEP_TIME",
+			"ASTBlock",
+			"BlockParserPrefix",
+			"Block",
+			"BlockExpr",
+			"Precedence",
+			"FunctionDefinitionPrefix",
+			"BracketsParserPrefix",
+			"BracketedExpr",
+			"brack",
+			"pretty_print",
+			"map_fn_definition",
+			"this->",
+			"inner_traverse",
+			"inner_tra",
+			"inner_traverse",
+			"Statement",
+			");",
+			"virtual",
+			")",
+			"void",
+			"{ return true; }",
+			" \n",
+			"run",
+			"stateful_uuid",
+			"s",
+			"fmap",
+			"140921216",
+			"enum class Pre",
+			"enum class Pre	",
+			"ConditionalTerm",
+			"__stringify",
+			"TokenType",
+			"Precedence::MathSum",
+			"s[i]",
+			"is_whitespace",
+			"strip_whitespace",
+			"struct TokenType",
+			"TokenType",
+			"tokenize_string",
+			"ASTPrefixExpr",
+			"expand",
+			"find_under",
+			"keys",
+			"bollu",
+			"ctrl+d",
+			"ctrl",
+			"ctrl+d",
+			"ASTPrefixExpr",
+			"ASTType",
+			"BaseAST",
+			"class ASTPrefixExpr : public BaseAST {\n",
+			"PrefixExprAST",
+			"class PrefixExprAST : public BaseAST {\n",
+			"LiteralAST",
+			"ParserIInfix",
+			"ParserIPrefix",
+			"ParserBasePrefix",
+			"BaseInfixParser",
+			"BasePrefixParser",
+			"LiteralAST",
+			"parser",
+			"add",
+			"__stringify",
+			"std::cout",
+			"}\n",
+			"std::cout",
+			"__stringify",
+			"stringify",
+			"constructed AST",
+			"parse",
+			"__stringify",
+			"__stri",
+			"stringify",
+			"__stringify",
+			"DEBUG_PRINT_POSITION",
+			"TokenType",
+			"LinePlotVisual",
+			"class LinePlotVisual",
+			"LinePlotVisual",
+			"(default",
+			"normalize",
+			"normalizw",
+			"_texture",
+			"class Colormap",
+			"class ImageVisual",
+			"get_colormap",
+			"class Colormap",
+			"class ImageVisual",
+			"vec2 posit",
+			"def set",
+			"set",
+			"class LinePlotVisual",
+			"LinePlotVisual",
+			"test",
+			"LinePlotVisual",
+			"test",
+			"LinePlotVisual",
+			"example",
+			"LinePlotVisual",
+			"class LinePlotVisual",
+			"LinePlotVisual",
+			"exam",
+			"LinePlot",
+			"class LinePlot",
+			"def set_data",
+			"set_data",
+			"class LineVisual",
+			"pos",
+			"class LineVisual",
+			"_line_kwds",
+			"class LinePlot",
+			"is_logged_in",
+			"try_login_with_accounts",
+			"AFTER_LOGIN_SLEEP_TIME",
+			"def _unit",
+			"fdef _unit",
+			"1",
+			" == ",
+			"assert",
+			"def assert_array_equal",
+			"assert_array_equal",
+			"0.5",
+			"running 110",
+			"running",
+			"def _hsv_to_rgb",
+			"colorarray",
+			"AFTER_LOGIN_SLEEP_TIME"
+		],
+		"highlight": false,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"shift",
+			"new_symbol",
+			"DATUM_TYPE_SYMBOL",
+			"new_lambda",
+			"DATUM_TYPE_LAMBDA",
+			"datum",
+			"DATUM_",
+			"Datum",
+			"updateLoginStatus(",
+			"",
+			"passwords_save_file",
+			"margin",
+			"width",
+			"height",
+			"VMInfoStatic",
+			"Vec",
+			"a",
+			"fmt.Printf",
+			"Menu"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/home/bollu/dotfiles/scripts/auto-net-reload.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4558,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								103,
+								103
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 36.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.9o:///home/bollu/prog/go/vinidium":
+	{
+		"height": 134.0
+	},
+	"output.9o:///home/bollu/prog/go/vinidium/src/github.com/bollu/gobot":
+	{
+		"height": 134.0
+	},
+	"output.9o:///home/bollu/prog/vinidium-go/src/github.com/bollu/gobot":
+	{
+		"height": 134.0
+	},
+	"output.CppYCM.2":
+	{
+		"height": 130.0
+	},
+	"output.CppYCM.4":
+	{
+		"height": 0.0
+	},
+	"output.GoSublime-main-output":
+	{
+		"height": 134.0
+	},
+	"output.GoSublime-output":
+	{
+		"height": 285.0
+	},
+	"output.GsDoc-output-output":
+	{
+		"height": 128.0
+	},
+	"output.MarGo-output":
+	{
+		"height": 134.0
+	},
+	"output.anaconda_documentation":
+	{
+		"height": 259.0
+	},
+	"output.exec":
+	{
+		"height": 239.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.haskell_sublime_load":
+	{
+		"height": 134.0
+	},
+	"output.sftp":
+	{
+		"height": 134.0
+	},
+	"project": "cpp-achilles.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"tokenizer.cpp",
+				"src/tokenizer.cpp"
+			],
+			[
+				"token",
+				"src/tokenizer.cpp"
+			],
+			[
+				"ast.",
+				"src/ast.h"
+			],
+			[
+				"te",
+				"src/tokenizer.h"
+			],
+			[
+				"tokeniz",
+				"src/tokenizer.h"
+			],
+			[
+				"tokeni",
+				"src/tokenizer.cpp"
+			],
+			[
+				"ast.h",
+				"src/ast.h"
+			],
+			[
+				"",
+				".ycm_extra_conf.py"
+			],
+			[
+				".ycm",
+				".ycm_extra_conf.py"
+			],
+			[
+				"main",
+				"src/main.cpp"
+			],
+			[
+				"ast.cpp",
+				"src/ast.cpp"
+			],
+			[
+				"pre",
+				"src/pretty_print.h"
+			],
+			[
+				"make",
+				"makefile"
+			],
+			[
+				"ast",
+				"ast.h"
+			],
+			[
+				"pr",
+				"pretty_print.h"
+			],
+			[
+				"ast.c",
+				"ast.cpp"
+			],
+			[
+				"test_",
+				"vispy/geometry/tests/test_triangulation.py"
+			],
+			[
+				"testpol",
+				"vispy/visuals/tests/test_polygon.py"
+			],
+			[
+				"color_ar",
+				"vispy/color/color_array.py"
+			],
+			[
+				"color_a",
+				"vispy/color/color_array.py"
+			],
+			[
+				"imagevi",
+				"examples/basics/visuals/image_visual.py"
+			],
+			[
+				"realtime_",
+				"examples/demo/gloo/realtime_signals.py"
+			],
+			[
+				"test_color",
+				"vispy/color/tests/test_color.py"
+			],
+			[
+				"_r",
+				"vispy/testing/_runners.py"
+			],
+			[
+				"wrappr",
+				"vispy/util/wrappers.py"
+			],
+			[
+				"_runners",
+				"vispy/testing/_runners.py"
+			],
+			[
+				"colorarr",
+				"vispy/color/color_array.py"
+			],
+			[
+				"color_arr",
+				"vispy/color/color_array.py"
+			],
+			[
+				"vispy/ima",
+				"vispy/visuals/image.py"
+			],
+			[
+				"ima",
+				"vispy/io/image.py"
+			],
+			[
+				"image",
+				"vispy/io/image.py"
+			],
+			[
+				"visuals/image",
+				"vispy/visuals/image.py"
+			],
+			[
+				"color_spa",
+				"vispy/color/color_space.py"
+			],
+			[
+				"gala",
+				"examples/demo/gloo/galaxy/galaxy.py"
+			],
+			[
+				"ga",
+				"examples/demo/gloo/galaxy.py"
+			],
+			[
+				"galax",
+				"examples/demo/gloo/galaxy.py"
+			],
+			[
+				"_runn",
+				"vispy/testing/_runners.py"
+			],
+			[
+				"testing",
+				"vispy/testing/_testing.py"
+			],
+			[
+				"vispy/test",
+				"vispy/testing/_runners.py"
+			],
+			[
+				"make/",
+				"make/make.py"
+			],
+			[
+				"make/make",
+				"make/make.py"
+			],
+			[
+				"vispy/testing/ru",
+				"vispy/testing/_runners.py"
+			],
+			[
+				"vispy/testing/__",
+				"vispy/testing/__init__.py"
+			],
+			[
+				"vispy/__init",
+				"vispy/__init__.py"
+			],
+			[
+				"__main",
+				"make/__main__.py"
+			],
+			[
+				"make/__",
+				"make/__init__.py"
+			],
+			[
+				"make/mak",
+				"make/make.py"
+			],
+			[
+				"progra",
+				"vispy/gloo/program.py"
+			],
+			[
+				"test_tex",
+				"vispy/gloo/tests/test_texture.py"
+			],
+			[
+				"test_tes",
+				"vispy/testing/tests/test_testing.py"
+			],
+			[
+				"tets_pro",
+				"vispy/gloo/tests/test_program.py"
+			],
+			[
+				"glir",
+				"vispy/gloo/glir.py"
+			],
+			[
+				"texture",
+				"vispy/gloo/texture.py"
+			],
+			[
+				"visu",
+				"vispy/scene/visuals.py"
+			],
+			[
+				"gli",
+				"vispy/gloo/glir.py"
+			],
+			[
+				"program",
+				"vispy/gloo/program.py"
+			],
+			[
+				"rotating",
+				"examples/tutorial/gloo/rotating_quad.py"
+			],
+			[
+				"buff",
+				"vispy/gloo/buffer.py"
+			],
+			[
+				"header",
+				"codegen/headerparser.py"
+			],
+			[
+				"_consta",
+				"vispy/gloo/gl/_constants.py"
+			],
+			[
+				"cr",
+				"codegen/createglapi.py"
+			],
+			[
+				"_con",
+				"vispy/gloo/gl/_constants.py"
+			],
+			[
+				"glo/proga",
+				"vispy/gloo/program.py"
+			],
+			[
+				"text",
+				"vispy/gloo/texture.py"
+			],
+			[
+				"textu",
+				"vispy/gloo/texture.py"
+			],
+			[
+				".acl",
+				"examples/hello_world.acl"
+			],
+			[
+				"sa",
+				"src/ast.rs"
+			],
+			[
+				"type_",
+				"src/type_checker.rs"
+			],
+			[
+				"type_wa",
+				"src/type_walkers.rs"
+			],
+			[
+				".ac",
+				"examples/hello_world.acl"
+			],
+			[
+				"type",
+				"src/type_walkers.rs"
+			],
+			[
+				"types",
+				"src/types.rs"
+			],
+			[
+				"ty",
+				"src/types.rs"
+			],
+			[
+				"man",
+				"src/main.rs"
+			],
+			[
+				"tye",
+				"src/type_checker.rs"
+			],
+			[
+				"hello",
+				"examples/hello_world.cpp"
+			],
+			[
+				".cpp",
+				"examples/hello_world.cpp"
+			],
+			[
+				"acl",
+				"examples/hello_world.acl"
+			],
+			[
+				"he",
+				"examples/hello_world.cpp"
+			],
+			[
+				"hel",
+				"examples/hello_world.acl"
+			],
+			[
+				"ca",
+				"Cargo.toml"
+			],
+			[
+				"as",
+				"src/ast.rs"
+			],
+			[
+				".caba",
+				"haskell-netwire.cabal"
+			],
+			[
+				"style.scss",
+				"in/css/style.scss"
+			],
+			[
+				"index.",
+				"in/html/index.html"
+			],
+			[
+				"sstyle",
+				"in/css/style.css"
+			],
+			[
+				"inter",
+				"src/interpreter.cpp"
+			],
+			[
+				"datum",
+				"src/datum.cpp"
+			],
+			[
+				".lsp",
+				"bin/program.lsp"
+			],
+			[
+				"ine",
+				"src/interpreter.cpp"
+			],
+			[
+				"nt",
+				"src/interpreter.cpp"
+			],
+			[
+				"as.h",
+				"src/ast.h"
+			],
+			[
+				"inex",
+				"index.html"
+			],
+			[
+				"html",
+				"bower_components/knockout/src/binding/defaultBindings/html.js"
+			],
+			[
+				"script",
+				"js/script.js"
+			],
+			[
+				"script.",
+				"js/script.js"
+			],
+			[
+				"package.",
+				"package.json"
+			],
+			[
+				"stye",
+				"css/style.scss"
+			],
+			[
+				"send",
+				"attack/send_attack.py"
+			],
+			[
+				"rever",
+				"attack/gen/reverse-engineered"
+			],
+			[
+				"log_",
+				"attack/gen/log_file"
+			],
+			[
+				"css",
+				"chrome-extension/bower_components/jquery/src/css.js"
+			],
+			[
+				"att",
+				"attack/send_attack.py"
+			],
+			[
+				"ion.js",
+				"chrome-extension/bower_components/bootstrap/js/transition.js"
+			],
+			[
+				"c",
+				"website-portal/client.jsp"
+			],
+			[
+				"attac.py",
+				"attack/send_attack.py"
+			],
+			[
+				"scrip",
+				"chrome-extension/script.js"
+			],
+			[
+				"st",
+				"chrome-extension/style.css"
+			],
+			[
+				"re",
+				"attack/gen/reverse-engineered"
+			],
+			[
+				"senda",
+				"attack/send_attack.py"
+			],
+			[
+				"send_",
+				"attack/send_attack.py"
+			],
+			[
+				"attac",
+				"attack/send_attack.py"
+			],
+			[
+				"popup",
+				"chrome-extension/popup.html"
+			],
+			[
+				"index",
+				"my-account-portal/mirror-1.186.15.77/1.186.15.77/index.html"
+			],
+			[
+				"websi",
+				"recursive-website-portal/172.16.16.16/24online/webpages/clientloginfilter.jsp?loginstatus=null&logoutstatus=null&message=null&liverequesttime=null&livemessage=null&url=null&isAccessDenied=null&fromlogout=null&sessionTimeout=null&ipaddress=null&clientLoginReq=false&username=null&formsubmiturl"
+			],
+			[
+				"rev",
+				"attack/gen/reverse-engineered"
+			],
+			[
+				"log",
+				"attack/gen/log_file"
+			],
+			[
+				"log_fi",
+				"attack/gen/log_file"
+			],
+			[
+				"mini",
+				"minimal-login.html"
+			],
+			[
+				"lof_",
+				"attack/log_file"
+			],
+			[
+				"my",
+				"myaccountlogin.jsp"
+			],
+			[
+				"rs",
+				"attack/response.html"
+			],
+			[
+				"clien",
+				"website-portal/client.jsp"
+			],
+			[
+				"cliefra",
+				"website-portal/client-logout-frame-inside.html"
+			],
+			[
+				"fra",
+				"website-portal/client-logout-frame-inside.html"
+			],
+			[
+				"clien-",
+				"website-portal/client-logout.html"
+			],
+			[
+				"upl",
+				"client/upload-song-fragment.html"
+			],
+			[
+				"fragmen",
+				"client/play-song-fragment.html"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+			[
+				"rac",
+				"~/prog/rust-achilles/rust-achilles.sublime-project"
+			],
+			[
+				"pi",
+				"~/subl-projects/pixeldruid.sublime-project"
+			],
+			[
+				"pixe",
+				"~/subl-projects/pixeldruid.sublime-project"
+			],
+			[
+				"rust-",
+				"~/prog/rust-achilles/rust-achilles.sublime-project"
+			],
+			[
+				"",
+				"~/prog/glumpy-to-vispy/glumpy-to-vispy.sublime-workspace"
+			],
+			[
+				"rust-ac",
+				"~/prog/rust-achilles/rust-achilles.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"ein",
+				"emailInputType"
+			]
+		],
+		"width": 426.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": false,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 262.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
