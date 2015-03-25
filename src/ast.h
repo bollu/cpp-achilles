@@ -2,8 +2,10 @@
 #include "tokenizer.h"
 #include "file_handling.h"
 #include "type_system.h"
+#include "assert.h"
 
 class IASTVisitor;
+class ASTRoot;
 class ASTLiteral;
 class ASTBlock;
 class ASTInfixExpr;
@@ -21,6 +23,7 @@ enum class ASTType {
     Block,
     FunctionDefinition,
     VariableDefinition,
+    Root,
 };
 
 class IAST {
@@ -41,6 +44,7 @@ class IAST {
 //visitor
 class IASTVisitor {
     public:
+        virtual void map_root(ASTRoot &root);
         virtual void map_literal(ASTLiteral &literal);
         virtual void map_block(ASTBlock &block);
         virtual void map_infix_expr(ASTInfixExpr &infix);
@@ -189,6 +193,24 @@ class ASTVariableDefinition : public IAST {
                 this->value->map(visitor);
             }
         };
+};
+
+class ASTRoot : public IAST {
+    public:
+        std::vector<std::shared_ptr<IAST>> children;
+
+        ASTRoot(std::vector<std::shared_ptr<IAST>> children, PositionRange position) :
+            IAST(ASTType::Root, position), children(children) {}
+
+        virtual void map(IASTVisitor &visitor) {
+            visitor.map_root(*this);
+        };
+
+        virtual void traverse_inner(IASTVisitor &visitor) {
+            for(auto child : this->children) {
+                child->map(visitor);
+            }
+        }
 };
 
 std::shared_ptr<IAST> parse(std::vector<Token> &tokens);

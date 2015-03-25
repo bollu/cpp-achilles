@@ -1,7 +1,6 @@
 #include "ast.h"
 #include <sstream>
 #include "assert.h"
-
 //-----------------------------------------------------
 //PARSING
 class Parser;
@@ -218,6 +217,8 @@ class BlockParserPrefix : public IParserPrefix {
             position.end = statement->position.end;
         };
 
+        parser.cursor.expect(TokenType::CloseCurlyBracket);
+
         return std::shared_ptr<IAST>(new ASTBlock(statements, nullptr, position));
     };
 };
@@ -252,7 +253,7 @@ class FunctionDefinitionPrefix : public IParserPrefix {
         std::shared_ptr<IAST> return_type = parser.parse(Precedence::Lowest); 
 
         std::shared_ptr<IAST> block = parser.parse(Precedence::Lowest); 
-
+        
         position.end = parser.cursor.get_current_range().end;
 
         return std::shared_ptr<IAST>(new ASTFunctionDefinition(fn_name,
@@ -338,14 +339,23 @@ std::shared_ptr<IAST> parse(std::vector<Token> &tokens) {
     //statement (postfix)
     p.add_infix_parser(new StatementParserPostfix);
 
-    std::shared_ptr<IAST> ast = p.parse(Precedence::Lowest);
-    return ast;
+    std::vector<std::shared_ptr<IAST>> children;
+    
+    while(p.cursor.get().type != TokenType::Eof) {
+        std::shared_ptr<IAST> ast = p.parse(Precedence::Lowest);
+        children.push_back(ast);
+    }
+
+    return std::shared_ptr<IAST>(new ASTRoot(children, PositionRange(0, p.cursor.get().pos.end)));
 };
 
 //-----------------------------------------------------
 //CODEGEN
 
 //VISITOR IMPL
+void IASTVisitor::map_root(ASTRoot &root) {
+    root.traverse_inner(*this);
+};
 void IASTVisitor::map_literal(ASTLiteral &literal) {
     literal.traverse_inner(*this);
 };

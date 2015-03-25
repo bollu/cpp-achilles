@@ -45,5 +45,7 @@ struct TypeSystemType {
     TypeSystemType(Variant variant) : variant(variant), size(UNDEFINED), uuid(UNDEFINED) {};
 };
 
+std::ostream& operator <<(std::ostream &out, const TypeSystemType& type);
+
 class IAST;
 void type_system_type_check(std::vector<std::shared_ptr<IAST>> &program);

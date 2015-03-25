@@ -519,14 +519,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "/home/bollu/dotfiles/scripts/auto-net-reload.py",
-			"settings":
-			{
-				"buffer_size": 4558,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
 	"command_palette":
@@ -1074,6 +1066,8 @@
 	],
 	"file_history":
 	[
+		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
+		"/home/bollu/prog/cpp-achilles/.gitignore",
 		"/home/bollu/prog/cpp-achilles/src/ast.cpp",
 		"/home/bollu/prog/cpp-achilles/src/tokenizer.h",
 		"/home/bollu/prog/cpp-achilles/src/tokenizer.cpp",
@@ -1086,7 +1080,6 @@
 		"/home/bollu/.config/sublime-text-3/Packages/User/C++YouCompleteMe.sublime-settings",
 		"/home/bollu/powerline-shell/config.py",
 		"/home/bollu/.config/sublime-text-3/Packages/C++YouCompleteMe/C++YouCompleteMe.sublime-settings",
-		"/home/bollu/prog/cpp-achilles/.gitignore",
 		"/home/bollu/.config/sublime-text-3/Packages/C++YouCompleteMe/Default (Linux).sublime-keymap",
 		"/home/bollu/prog/cpp-achilles/ycm_extra_conf.py",
 		"/home/bollu/prog/cpp-achilles/.ropeproject/config.py",
@@ -1095,7 +1088,6 @@
 		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/gloo/animate_shape.py",
 		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/backends/_ipynb_static.py",
 		"/home/bollu/.vimrc",
-		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
 		"/home/bollu/prog/random-snippets/haskell-types/state.hs",
 		"/home/bollu/scripts/auto-net-reload.py",
 		"/home/bollu/.config/fish/config.fish",
@@ -1402,38 +1394,8 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/home/bollu/dotfiles/scripts/auto-net-reload.py",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4558,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								103,
-								103
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"syntax": "Packages/Python/Python.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],

@@ -36,6 +36,36 @@ bool TypeSystemType::operator == (const TypeSystemType &other) {
 };
 
 
+std::ostream& operator <<(std::ostream &out, const TypeSystemType& type) {
+    switch(type.variant) {
+        case TypeSystemType::Variant::TypeVariable:
+            out<<"var-"<<type.uuid;
+            break;
+
+        case TypeSystemType::Variant::Uninitialized:
+            out<<"<undef>";
+            break;
+
+        case TypeSystemType::Variant::Int:
+            out<<"i"<<type.size;
+            break;
+
+        case TypeSystemType::Variant::Float:
+            out<<"f"<<type.size;
+            break;
+
+        case TypeSystemType::Variant::Bool:
+            out<<"bool"<<type.size;
+            break;
+
+        case TypeSystemType::Variant::String:
+            out<<"string"<<type.size;
+            break;
+    };
+
+    return out;
+};
+
 class ASTTypeVariableGenerator : public IASTVisitor {
 
 };

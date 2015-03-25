@@ -7,7 +7,7 @@ link: build
 		build/tokenizer.o \
 		build/file_handling.o \
 		build/ast.o \
-		build/type_system.o
+		build/type_system.o \
 		-o bin/achilles
 	@echo "----\n"
 

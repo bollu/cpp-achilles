@@ -26,8 +26,8 @@ int main(int argc, char **argv) {
 
     std::cout<<"\nparsing:\n";
     std::shared_ptr<IAST> ast = parse(tokens);
+    std::cout<<"type: "<<(int)ast->ast_type;
     std::cout<<pretty_print(*ast);
-    //std::cout<<ast->stringify();
     return 0;
 }
 
