@@ -519,11 +519,19 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/home/bollu/.vimrc",
+			"settings":
+			{
+				"buffer_size": 12962,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
 	"command_palette":
 	{
-		"height": 194.0,
+		"height": 375.0,
 		"selected_items":
 		[
 			[
@@ -1230,6 +1238,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"set",
 			"AFTER_LOGIN_SLEEP_TIME",
 			"ASTBlock",
 			"BlockParserPrefix",
@@ -1356,8 +1365,7 @@
 			"running 110",
 			"running",
 			"def _hsv_to_rgb",
-			"colorarray",
-			"AFTER_LOGIN_SLEEP_TIME"
+			"colorarray"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1394,8 +1402,38 @@
 	"groups":
 	[
 		{
+			"selected": 0,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/home/bollu/.vimrc",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12962,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								459,
+								459
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],

@@ -12,6 +12,7 @@ class ASTInfixExpr;
 class ASTPrefixExpr;
 class ASTStatement;
 class ASTFunctionDefinition;
+class ASTFunctionCall;
 class ASTVariableDefinition;
 
 enum class ASTType {
@@ -23,15 +24,17 @@ enum class ASTType {
     Block,
     FunctionDefinition,
     VariableDefinition,
+    FunctionCall,
     Root,
 };
 
 class IAST {
     protected:
-        IAST(ASTType ast_type, PositionRange position) : ast_type(ast_type), position(position) {};
+        IAST(ASTType ast_type, PositionRange position) : ast_type(ast_type), position(position), ts_type(nullptr), ts_scope(nullptr){};
     public:
         ASTType ast_type;
-        TypeSystemType type_system_type;
+        TSType* ts_type;
+        TSScope* ts_scope;
         PositionRange position;
 
         //calls the correct version of the visit on the visitor
@@ -51,6 +54,7 @@ class IASTVisitor {
         virtual void map_prefix_expr(ASTPrefixExpr &prefix);
         virtual void map_statement(ASTStatement &statement);
         virtual void map_fn_definition(ASTFunctionDefinition &fn_defn);
+        virtual void map_fn_call(ASTFunctionCall &fn_call);
         virtual void map_variable_definition(ASTVariableDefinition &variable_defn);
 };
 
@@ -173,6 +177,28 @@ class ASTFunctionDefinition : public IAST {
 };
 
 
+class ASTFunctionCall : public IAST {
+    public:
+
+        std::shared_ptr<IAST> name;
+        std::vector<std::shared_ptr<IAST>> params;
+
+
+        ASTFunctionCall(std::shared_ptr<IAST> name, std::vector<std::shared_ptr<IAST>> params, PositionRange position) :
+            name(name), params(params), IAST(ASTType::FunctionCall, position) {};
+        virtual void map(IASTVisitor &visitor) {
+            visitor.map_fn_call(*this);
+        };
+
+        virtual void traverse_inner(IASTVisitor &visitor) {
+            this->name->map(visitor);
+
+            for(auto param: params) {
+                param->map(visitor);
+            }
+        };
+};
+
 class ASTVariableDefinition : public IAST {
     public:
         const Token &name;
@@ -187,9 +213,11 @@ class ASTVariableDefinition : public IAST {
         };
 
         virtual void traverse_inner(IASTVisitor &visitor) {
-            this->type->map(visitor);
+            if (this->type) {
+                this->type->map(visitor);
+            }
 
-            if(this->value) {
+            if (this->value) {
                 this->value->map(visitor);
             }
         };
@@ -213,4 +241,4 @@ class ASTRoot : public IAST {
         }
 };
 
-std::shared_ptr<IAST> parse(std::vector<Token> &tokens);
+std::shared_ptr<IAST> parse(std::vector<Token> &tokens, std::string &file_data);

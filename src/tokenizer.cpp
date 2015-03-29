@@ -21,14 +21,21 @@ std::ostream& operator <<(std::ostream &out, const TokenType &token_type) {
         case TokenType::CondNot:
             out<<"!";
             break;
+
+        case TokenType::Comma:
+            out<<",";
+            break;
         case TokenType::Semicolon:
             out<<";";
             break;
         case TokenType::ThinArrow:
             out<<"->";
             break;
-          case TokenType::Colon:
+        case TokenType::Colon:
             out<<":";
+            break;
+        case TokenType::Equals:
+            out<<"=";
             break;
         case TokenType::Plus:
             out<<"+";
@@ -92,7 +99,8 @@ std::ostream& operator <<(std::ostream &out, const TokenType &token_type) {
             out<<"un-";
             break;
         case TokenType::String:
-        case TokenType::Number:
+        case TokenType::Int:
+        case TokenType::Float:
             break;
     };
     return out;
@@ -102,8 +110,11 @@ std::ostream& operator <<(std::ostream &out, const TokenValue &token_value) {
     if(token_value.ptr_s) {
         out<<*token_value.ptr_s;
     }
-    else if(token_value.ptr_num) {
-        out<<*token_value.ptr_num;
+    else if(token_value.ptr_i) {
+        out<<*token_value.ptr_i;
+    }
+    else if(token_value.ptr_f) {
+        out<<*token_value.ptr_f;
     }
 
     return out;
@@ -113,10 +124,6 @@ std::ostream& operator <<(std::ostream &out, const TokenValue &token_value) {
 
 std::ostream& operator <<(std::ostream &out, const Token &token) {
     out<<token.type<<token.value;
-#ifdef DEBUG_PRINT_POSITION
-    out<<token.pos;
-#endif
-
     return out;
 }
 
@@ -143,10 +150,12 @@ PositionIndex strip_whitespace(std::string s, PositionIndex i) {
 
 
 const std::vector<std::pair<std::string, TokenType>> sigil_map = {
+    { "=", TokenType::Equals },
     { "->", TokenType::ThinArrow },
     { "(", TokenType::OpenBracket },
     { ")", TokenType::CloseBracket },
     { ";", TokenType::Semicolon },
+    { ",", TokenType::Comma },
     { ":", TokenType::Colon },
     { "{", TokenType::OpenCurlyBracket },
     { "}", TokenType::CloseCurlyBracket },
@@ -177,7 +186,8 @@ const std::map<std::string, TokenType> keywords_map = {
     {"fn", TokenType::Fn},
 };
 
-std::vector<Token> tokenize_string(std::string s) {
+
+std::vector<Token> tokenize_string(std::string &s) {
     std::vector<Token> tokens;
     PositionIndex i = 0;
     PositionIndex begin = 0;
@@ -190,7 +200,7 @@ std::vector<Token> tokenize_string(std::string s) {
 
             //if we find a sigil, split it out
             if(s.substr(i, sigil_str.size()) == sigil_str) {
-                tokens.push_back(Token(sigil_token_type, PositionRange(begin, i)));
+                tokens.push_back(Token(sigil_token_type, PositionRange(begin, i, s)));
                 i += sigil_str.size();
 
                 //strip whitespace and get back to tokenization
@@ -223,7 +233,7 @@ std::vector<Token> tokenize_string(std::string s) {
             };
             //skip over the closing quotes
             i++;
-            tokens.push_back(Token(TokenType::String, string, PositionRange(begin, i)));
+            tokens.push_back(Token(TokenType::String, string, PositionRange(begin, i, s)));
 
         }
         //numbers
@@ -233,10 +243,18 @@ std::vector<Token> tokenize_string(std::string s) {
                 number_string.push_back(s[i]);
                 i++;
             };
-            
-            TokenNumber number = 0;
-            number = std::stold(number_string.c_str());
-            tokens.push_back(Token(TokenType::Number, number, PositionRange(begin, i)));
+
+            bool is_int = number_string.find('.') == std::string::npos; 
+
+            if (is_int) {
+                long long num_i = std::stoll(number_string.c_str());
+                tokens.push_back(Token(TokenType::Int, num_i, PositionRange(begin, i, s)));
+
+            } else {
+                long double num_f = std::stold(number_string.c_str());
+                tokens.push_back(Token(TokenType::Float, num_f, PositionRange(begin, i, s)));
+
+            }
         }
         //identifiers
         else if (is_alphabet(s[i])) {
@@ -250,12 +268,12 @@ std::vector<Token> tokenize_string(std::string s) {
                 std::string name = it.first;
                 if (name == identifier_name) {
                     TokenType identifier_token_type = it.second; 
-                    tokens.push_back(Token(identifier_token_type, PositionRange(begin, i)));
+                    tokens.push_back(Token(identifier_token_type, PositionRange(begin, i, s)));
                     goto TOKENIZATION_END;
                 }
             }
-            //not an keyword, it's an identifier:
-            tokens.push_back(Token(TokenType::Identifier, identifier_name, PositionRange(begin, i)));
+            //not a keyword, it's an identifier:
+            tokens.push_back(Token(TokenType::Identifier, identifier_name, PositionRange(begin, i, s)));
         }
         //undecided strings
         else {
@@ -264,7 +282,8 @@ std::vector<Token> tokenize_string(std::string s) {
                 undecided_string.push_back(s[i]);
                 i++;
             }
-            tokens.push_back(Token(TokenType::Undecided, undecided_string, PositionRange(begin, i)));
+
+            tokens.push_back(Token(TokenType::Undecided, undecided_string, PositionRange(begin, i, s)));
 
         }
 TOKENIZATION_END:

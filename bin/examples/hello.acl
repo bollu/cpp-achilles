@@ -1,0 +1,16 @@
+fn main() -> i32 {
+	let x = 10;
+	let y = 10.25;
+	let z = "hello";
+	
+	{x + y + z + z + y + x};
+	{x + y + z}
+	{
+		let k = 2;
+		k + 1;
+	}
+	{
+		let k = 3;
+		k + 2;
+	}
+}

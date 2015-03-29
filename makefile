@@ -11,7 +11,9 @@ link: build
 		-o bin/achilles
 	@echo "----\n"
 
-build: src/*
+dummy: 
+
+build: dummy src/*
 	#clang -lstdc++ -std=c++11 -lm src/main.cpp  -Werror -g -c  build/main.o
 	 $(CLANG_OBJ) -c src/main.cpp  -o build/main.o
 	 $(CLANG_OBJ) -c src/tokenizer.cpp  -o build/tokenizer.o

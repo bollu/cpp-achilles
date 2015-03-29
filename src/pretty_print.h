@@ -18,6 +18,8 @@ class ASTPrettyPrinter : public IASTVisitor {
         void map_prefix_expr(ASTPrefixExpr &prefix);
         void map_statement(ASTStatement &statement);
         void map_fn_definition(ASTFunctionDefinition &fn_defn);
+        void map_fn_call(ASTFunctionCall &fn_call);
+        void map_variable_definition(ASTVariableDefinition &variable_defn);
 };
 
 void pretty_print_to_stream(IAST &ast, std::ostream &out) {
@@ -35,19 +37,27 @@ ASTPrettyPrinter::ASTPrettyPrinter(std::ostream &out) : out(out), depth(0) {};
 
 void ASTPrettyPrinter::print_indent() {
     for(int i = 0; i < this->depth; ++i) {
+        out<<"|";
         out<<"  ";
     }
 };
 
 void ASTPrettyPrinter::map_literal(ASTLiteral &literal) {
     this->out<<literal.token;
+    //this->out<<"<-";
+    this->out<<":"; 
+    if(literal.ts_type) {
+        this->out<<*literal.ts_type;
+    }
+
 };
 
 void ASTPrettyPrinter::map_block(ASTBlock &block){
     out<<"\n";
     this->print_indent();
-    out<<"{";
+    out<<"{\n";
     this->depth++;
+    this->print_indent();
 
     for(auto statement: block.statements) {
         statement->map(*this);
@@ -63,6 +73,14 @@ void ASTPrettyPrinter::map_infix_expr(ASTInfixExpr &infix){
     infix.left->map(*this);
     out<<" "<<infix.op<<" ";
     infix.right->map(*this);
+    /*
+       out<<" ( ";
+       out<<infix.op<<" ";
+
+       infix.left->map(*this);
+       infix.right->map(*this);
+       out<<" ) ";
+       */
 };
 
 void ASTPrettyPrinter::map_prefix_expr(ASTPrefixExpr &prefix){
@@ -104,3 +122,33 @@ void ASTPrettyPrinter::map_fn_definition(ASTFunctionDefinition &fn_defn){
 
 };
 
+void ASTPrettyPrinter::map_variable_definition(ASTVariableDefinition &defn) {
+    out<<"let ";
+    out<<defn.name;
+
+    if(defn.type) {
+        out<<" : ";
+        defn.type->map(*this);
+    };
+
+    if(defn.value) {
+        out<<" = ";
+        defn.value->map(*this);
+    }
+}
+
+void ASTPrettyPrinter::map_fn_call(ASTFunctionCall &fn_call) {
+    fn_call.name->map(*this);
+    out<<"(";
+    int num_commas = fn_call.params.size() - 1;
+
+    for(auto param : fn_call.params) {
+        param->map(*this);
+
+        if(num_commas > 0) {
+            out<<", ";
+            num_commas--;
+        }
+    }
+    out<<")";
+};
