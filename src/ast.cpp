@@ -284,17 +284,17 @@ class VariableDefinitionPrefix : public IParserPrefix {
             type = parser.parse(Precedence::Highest);
         }
 
-        std::shared_ptr<IAST> value = nullptr;
+        std::shared_ptr<IAST> rhs_value = nullptr;
 
         if (parser.cursor.get().type == TokenType::Equals) {
             parser.cursor.expect(TokenType::Equals);
-            value = parser.parse(Precedence::Highest);
+            rhs_value = parser.parse(Precedence::Highest);
         }
 
 
         position = position.extend_end(parser.cursor.get_current_range());
 
-        return std::shared_ptr<ASTVariableDefinition>(new ASTVariableDefinition(name, type, value, position));
+        return std::shared_ptr<ASTVariableDefinition>(new ASTVariableDefinition(name, type, rhs_value, position));
     }
 };
 
@@ -464,3 +464,41 @@ void IASTVisitor::map_fn_call(ASTFunctionCall &fn_call) {
 void IASTVisitor::map_variable_definition(ASTVariableDefinition &variable_defn) {
     variable_defn.traverse_inner( *this);
 };
+
+
+void IASTGenericVisitor::map_root(ASTRoot &root) {
+    this->map_ast(root);
+};
+
+void IASTGenericVisitor::map_literal(ASTLiteral &literal) {
+    this->map_ast(literal);
+};
+
+void IASTGenericVisitor::map_block(ASTBlock &block) {
+    this->map_ast(block);
+};
+
+void IASTGenericVisitor::map_infix_expr(ASTInfixExpr &infix) {
+    this->map_ast(infix);
+};
+
+void IASTGenericVisitor::map_prefix_expr(ASTPrefixExpr &prefix) {
+    this->map_ast(prefix);
+};
+
+void IASTGenericVisitor::map_statement(ASTStatement &statement) {
+    this->map_ast(statement);
+};
+
+void IASTGenericVisitor::map_fn_definition(ASTFunctionDefinition &fn_defn) {
+    this->map_ast(fn_defn);
+};
+
+void IASTGenericVisitor::map_fn_call(ASTFunctionCall &fn_call) {
+    this->map_ast(fn_call);
+};
+
+void IASTGenericVisitor::map_variable_definition(ASTVariableDefinition &variable_defn) {
+    this->map_ast(variable_defn);
+};
+

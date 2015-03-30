@@ -2,13 +2,16 @@
 #include "ast.h"
 #include <assert.h>
 #include <sstream>
+#include <iostream>
+
 
 
 int32_t TSTypevar::static_uuid_count = 0;
+std::vector<TSType> TSScope::types;
 
-TSType& TSScope::get_variable_type(const std::string &name) {
-    auto it = this->sym_table.find(name);
-    if (it == this->sym_table.end()) {
+TSType TSScope::get_symbol_type(const std::string &name) {
+    auto it = this->name_to_index_map.find(name);
+    if (it == this->name_to_index_map.end()) {
         if(this->parent == nullptr) {
             std::stringstream error;
             error<<"unable to find symbol: ";
@@ -16,26 +19,39 @@ TSType& TSScope::get_variable_type(const std::string &name) {
 
             throw std::runtime_error(error.str());
         } else {
-            return this->parent->get_variable_type(name);
+            return this->parent->get_symbol_type(name);
         }
     } else {
-        TSType *type = this->sym_table[name];
-        assert(type != nullptr);
-        return *type; 
+        TypevarUUID index = it->second;
+        return this->get_symbol_type(index); 
     }
+
 }
 
-/*
-void TSScope::replace_variable_type(const std::string &name, TSType *new_type) {
-    assert(this->has_type(name));
-
-    delete(this->sym_table[name]);
-    this->sym_table[name] = new_type;
+TSType TSScope::get_symbol_type(const TypevarUUID &id ){
+    assert(id >= 0);
+    return this->types.at(id);
 };
-*/
+
+TypevarUUID TSScope::get_symbol_uuid(const std::string &name) {
+    auto it = this->name_to_index_map.find(name);
+
+    if (it == this->name_to_index_map.end()) {
+        if (this->parent == nullptr) {
+            std::stringstream error;
+            error<<"unable to find symbol: "<<name;
+            throw std::runtime_error(error.str());
+
+        } else {
+            return this->parent->get_symbol_uuid(name);
+        }
+    }
+
+    return it->second;
+};
 
 bool TSScope::has_type(const std::string &name) {
-    if(this->sym_table.find(name) != this->sym_table.end()) {
+    if(this->name_to_index_map.find(name) != this->name_to_index_map.end()) {
         return true;
     } else {
         if (this->parent == nullptr) {
@@ -46,10 +62,15 @@ bool TSScope::has_type(const std::string &name) {
     }
 };
 
-void TSScope::add_variable(const std::string &name, TSType *type) {
-    assert(!has_type(name));
-    assert(type);
-    this->sym_table[name] = type;
+
+TypevarUUID TSScope::add_symbol(std::string name, TSType type) {
+    assert(!this->has_type(name));
+    this->types.push_back(type);
+    TypevarUUID index = this->types.size() - 1;
+
+    this->name_to_index_map[name] = index;
+
+    return index;
 };
 
 
@@ -90,65 +111,15 @@ std::ostream& operator <<(std::ostream &out, const TSType &type) {
     return out;
 };
 
-/*
-std::ostream& operator <<(std::ostream &out, const TSType& type) {
-    switch(type.variant) {
-        case TSType::Variant::TypeVariable:
-            out<<"var-"<<type.typevar_ptr->uuid;
-            break;
-
-        case TSType::Variant::Uninitialized:
-            out<<"bottom";
-            break;
-
-        case TSType::Variant::Void:
-            out<<"void";
-            break;
-
-        case TSType::Variant::SizedInt:
-            out<<"i"<<type.size;
-            break;
-        
-        case TSType::Variant::AbstractInt:
-            out<<"iabs";
-            break;
-
-        case TSType::Variant::SizedFloat:
-            out<<"f"<<type.size;
-            break;
-
-        case TSType::Variant::AbstractFloat:
-            out<<"fabs";
-            break;
-
-        case TSType::Variant::Bool:
-            out<<"bool";
-            break;
-
-        case TSType::Variant::String:
-            out<<"string";
-            break;
-    };
-
-    return out;
-};
-*/
 
 
 
-struct ASTScopeGenerator : public IASTVisitor {
+//AST VISITORS----------------------------------------
+struct ASTScopeGenerator : public IASTGenericVisitor {
 
     TSScope *scope;
 
     ASTScopeGenerator(TSScope *scope) : scope(scope) {};
-
-    void map_root(ASTRoot &root) {
-        recursive_setup_scope(root);
-    };
-
-    void map_literal(ASTLiteral &literal) {
-        recursive_setup_scope(literal);
-    };
 
     void map_block(ASTBlock &block) {
         //create a new scope that is a child of the current scope
@@ -158,94 +129,73 @@ struct ASTScopeGenerator : public IASTVisitor {
         ASTScopeGenerator inner_scope_generator(inner_scope);
 
         //make the inner scope setup on the block
-        inner_scope_generator.recursive_setup_scope(block);
+        inner_scope_generator.map_ast(block);
     };
 
-    void map_infix_expr(ASTInfixExpr &infix) {
-        recursive_setup_scope(infix);
-    };
-
-    void map_prefix_expr(ASTPrefixExpr &prefix) {
-        recursive_setup_scope(prefix);
-    };
-
-    void map_statement(ASTStatement &statement) {
-        recursive_setup_scope(statement);
-    };
-
-    void map_fn_definition(ASTFunctionDefinition &fn_defn) {
-        recursive_setup_scope(fn_defn);
-    };
-
-    void map_variable_definition(ASTVariableDefinition &variable_defn) {
-        recursive_setup_scope(variable_defn);
-    };
-
-    void recursive_setup_scope(IAST &ast) {
+    void map_ast(IAST &ast) {
         ast.ts_scope = this->scope;
         ast.traverse_inner(*this);
     };
 };
 
-#include <iostream>
 
-struct ASTTypeVariableGenerator : public IASTVisitor {
+struct ASTTypeVariableCreator : public IASTVisitor {
 
     void map_variable_definition(ASTVariableDefinition &variable_defn) {
         const Token &name_token = variable_defn.name;
         assert(name_token.value.ptr_s && "identifier token does not have proper string");
-        std::string name = *name_token.value.ptr_s;
+        std::string var_name = *name_token.value.ptr_s;
 
         TSScope *scope = variable_defn.ts_scope;;
 
         //the variable already exists
-        if (scope->has_type(name)) {
+        if (scope->has_type(var_name)) {
             std::stringstream error;
             error<<"multiple definition of variable;";
-            error<<"\nname: "<<name;
-            error<<"\nprevious definition at: "<<scope->get_variable_type(name).data.typevar->definition_pos;
-            
+            error<<"\nname: "<<var_name;
+            error<<"\nprevious definition at: "<<scope->get_symbol_type(var_name).data.typevar->definition_pos;
+
 
             throw std::runtime_error(error.str());
         };    
 
-        //add in the variable
-        TSTypevar *typevar = new TSTypevar(variable_defn.position);
-        TSType *type = new TSType(typevar);
-        scope->add_variable(name, type);
+        //construct the new type variable
+        scope->add_symbol(var_name, TSType::Typevar(variable_defn.position));
     };
 
 };
 
-struct ASTLiteralTypeApplier : public IASTVisitor {
+struct ASTTypeVariableSetter : public IASTVisitor {
     void map_literal(ASTLiteral &literal) {
-            
+
         TSScope *scope = literal.ts_scope;
 
         if (literal.token.type == TokenType::Int) {
-            literal.ts_type = new TSType(TSVariant::AbstractInt);
+            literal.ts_typevar_uuid = scope->get_symbol_uuid("int");
             literal.traverse_inner(*this); 
         }
         else if (literal.token.type == TokenType::Float) {
-            literal.ts_type = new TSType(TSVariant::AbstractFloat);
+            literal.ts_typevar_uuid = scope->get_symbol_uuid("float");
             literal.traverse_inner(*this); 
         }
         else if (literal.token.type == TokenType::String) {
-            literal.ts_type = new TSType(TSVariant::String);
+            literal.ts_typevar_uuid = scope->get_symbol_uuid("string");
             literal.traverse_inner(*this); 
         }
         else if (literal.token.type == TokenType::Identifier) {        
-            assert(literal.token.type == TokenType::Identifier);
             //all identifiers
             assert(literal.token.value.ptr_s && "literal AST name undefined");
             std::string name = *literal.token.value.ptr_s;
 
             try {
                 //set the type up
-                literal.ts_type = &scope->get_variable_type(name);
-                literal.traverse_inner(*this); 
+                assert(literal.ts_typevar_uuid < 0);
+                //&scope->get_symbol_type(name);
+                //std::cout<<"\n name: "<<name<<" | "<<scope->get_symbol_type(name); 
+                TypevarUUID uuid = scope->get_symbol_uuid(name);
+                literal.ts_typevar_uuid = uuid;
             }
-            catch(std::runtime_error no_type_variable) {
+            catch (std::runtime_error no_type_variable) {
                 std::stringstream err;
                 err<<no_type_variable.what();
                 err<<literal.position;
@@ -259,23 +209,94 @@ struct ASTLiteralTypeApplier : public IASTVisitor {
 };
 
 
-class ASTTypeSubstituter : public IASTVisitor {
+class ASTSubsGenerator : public IASTVisitor {
     void map_variable_definition(ASTVariableDefinition &variable_defn) {
         TSScope *scope = variable_defn.ts_scope;
         std::string &var_name = *variable_defn.name.value.ptr_s;
-    
-    };
+
+        TSType lhs_type = scope->get_symbol_type(var_name);
+
+        //substitute LHS with the RHS
+        if(variable_defn.rhs_value != nullptr) {
+            lhs_type.data.typevar->substitution_uuid = variable_defn.rhs_value->ts_typevar_uuid;
+
+        }
+    }
 };
 
-//--------------------------------
-//TYPE INFERENCE ALGORITHM
+#include <iostream>
+
+class ASTSubsApplier : public IASTGenericVisitor {
+
+    void map_ast(IAST &ast) {
+        TSScope *scope = ast.ts_scope;
+        ast.ts_typevar_uuid = this->substitute_for_concrete_type(scope, ast.ts_typevar_uuid); 
+        ast.traverse_inner(*this);
+    }
+
+    TypevarUUID substitute_for_concrete_type(TSScope *scope, const TypevarUUID &base_uuid) {
+
+        TypevarUUID seeker_uuid = base_uuid;
+        while(scope->get_symbol_type(seeker_uuid).variant == TSVariant::TypeVariable) {
+            assert(seeker_uuid >= 0);
+            seeker_uuid = scope->get_symbol_type(seeker_uuid).data.typevar->substitution_uuid;
+        }
+
+        assert(scope->get_symbol_type(seeker_uuid).variant != TSVariant::TypeVariable);
+        return seeker_uuid;
+    }
+
+};
+
+void apply_substitutions(TSScope *scope) {
+    ERROR
+}
+
+//--------------------------------------------------
+//CONSTAINTS
+class ASTConstraintVariableDefinition : public IASTVisitor {
+
+    public:
+
+        void map_variable_definition(ASTVariableDefinition &variable_defn) {
+            TSScope *scope = variable_defn.ts_scope;
+
+            if (variable_defn.type) {
+                std::string &name = *variable_defn.name.value.ptr_s;
+                TypevarUUID lhs_uuid = scope->get_symbol_uuid(name);
+
+                TypevarUUID expected_uuid = variable_defn.type->ts_typevar_uuid;
+
+                if (lhs_uuid != expected_uuid) {
+                    std::stringstream error;
+                    error<<"types do not match for variable declaration";
+                    error<<"\nexpected type: "<<scope->get_symbol_type(expected_uuid);
+                    error<<"\nfound type: "<<scope->get_symbol_type(lhs_uuid);
+                    error<<variable_defn.position;
+
+                    throw std::runtime_error(error.str());
+                }
+
+            }
+        };
+};
 
 
+//---------------------------------------------------
+//CORE ALGORITHM
 void populate_default_identifiers(TSScope *root) {
-    root->add_variable("void",new TSType(TSVariant::Void));
-    root->add_variable("i64", new TSType(TSVariant::SizedInt, 64));
-    root->add_variable("i32", new TSType(TSVariant::SizedInt, 32));
-    root->add_variable("i16", new TSType(TSVariant::SizedInt, 16));
+    root->add_symbol("void", TSType::Void());
+    root->add_symbol("string", TSType::String());
+
+    root->add_symbol("int", TSType::AbstractInt());
+    root->add_symbol("i64", TSType::SizedInt(64));
+    root->add_symbol("i32", TSType::SizedInt(32u));
+    root->add_symbol("i16", TSType::SizedInt(16));
+
+    root->add_symbol("float", TSType::AbstractFloat());
+    root->add_symbol("f64", TSType::SizedFloat(64));
+    root->add_symbol("f32", TSType::SizedFloat(32));
+    root->add_symbol("f16", TSType::SizedInt(16));
 }
 
 
@@ -286,13 +307,31 @@ void type_system_type_check(std::shared_ptr<IAST> &program) {
     ASTScopeGenerator scope_generator(root_scope);
     program->map(scope_generator);
 
-    ASTTypeVariableGenerator typevar_generator;
+
+    //generate typevars 
+    ASTTypeVariableCreator typevar_generator;
     program->map(typevar_generator);
+
 
     //creates typevaras for identifiers
     //creates abstract / concrete types for literals
-    ASTLiteralTypeApplier type_applier;
+    ASTTypeVariableSetter type_applier;
     program->map(type_applier);
 
-    ASTTypeSubstituter type_substituter;
+    return;
+
+
+
+    //generate substitutions for entire program
+    ASTSubsGenerator subs_generator;
+    program->map(subs_generator);
+
+    //apply substitutions
+    ASTSubsApplier subs_applier;
+    program->map(subs_applier);
+
+
+    //constraints variable declaration
+    ASTConstraintVariableDefinition constraint_var_defn;
+    program->map(constraint_var_defn);
 };

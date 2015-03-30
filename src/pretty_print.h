@@ -46,8 +46,8 @@ void ASTPrettyPrinter::map_literal(ASTLiteral &literal) {
     this->out<<literal.token;
     //this->out<<"<-";
     this->out<<":"; 
-    if(literal.ts_type) {
-        this->out<<*literal.ts_type;
+    if(literal.ts_typevar_uuid >= 0) {
+        this->out<<literal.ts_scope->get_symbol_type(literal.ts_typevar_uuid);
     }
 
 };
@@ -70,17 +70,11 @@ void ASTPrettyPrinter::map_block(ASTBlock &block){
 };
 
 void ASTPrettyPrinter::map_infix_expr(ASTInfixExpr &infix){
+    out<<"(";
     infix.left->map(*this);
     out<<" "<<infix.op<<" ";
     infix.right->map(*this);
-    /*
-       out<<" ( ";
-       out<<infix.op<<" ";
-
-       infix.left->map(*this);
-       infix.right->map(*this);
-       out<<" ) ";
-       */
+    out<<")";
 };
 
 void ASTPrettyPrinter::map_prefix_expr(ASTPrefixExpr &prefix){
@@ -131,9 +125,9 @@ void ASTPrettyPrinter::map_variable_definition(ASTVariableDefinition &defn) {
         defn.type->map(*this);
     };
 
-    if(defn.value) {
+    if(defn.rhs_value) {
         out<<" = ";
-        defn.value->map(*this);
+        defn.rhs_value->map(*this);
     }
 }
 

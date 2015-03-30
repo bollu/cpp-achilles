@@ -30,10 +30,11 @@ enum class ASTType {
 
 class IAST {
     protected:
-        IAST(ASTType ast_type, PositionRange position) : ast_type(ast_type), position(position), ts_type(nullptr), ts_scope(nullptr){};
+        IAST(ASTType ast_type, PositionRange position) : ast_type(ast_type), position(position), ts_typevar_uuid(-42), ts_scope(nullptr){};
     public:
         ASTType ast_type;
-        TSType* ts_type;
+        //uuid of the typevar of this AST
+        TypevarUUID ts_typevar_uuid;
         TSScope* ts_scope;
         PositionRange position;
 
@@ -58,7 +59,22 @@ class IASTVisitor {
         virtual void map_variable_definition(ASTVariableDefinition &variable_defn);
 };
 
+//provides a map_ast that lets you map over any generic ast type.
+//NOTE - all of the map_* internally call map_ast for this effect
+class IASTGenericVisitor : public IASTVisitor {
+    public:
+        virtual void map_ast(IAST &ast) = 0;
 
+        virtual void map_root(ASTRoot &root);
+        virtual void map_literal(ASTLiteral &literal);
+        virtual void map_block(ASTBlock &block);
+        virtual void map_infix_expr(ASTInfixExpr &infix);
+        virtual void map_prefix_expr(ASTPrefixExpr &prefix);
+        virtual void map_statement(ASTStatement &statement);
+        virtual void map_fn_definition(ASTFunctionDefinition &fn_defn);
+        virtual void map_fn_call(ASTFunctionCall &fn_call);
+        virtual void map_variable_definition(ASTVariableDefinition &variable_defn);
+};
 
 class ASTPrefixExpr : public IAST {
     public:
@@ -203,10 +219,10 @@ class ASTVariableDefinition : public IAST {
     public:
         const Token &name;
         std::shared_ptr<IAST> type;
-        std::shared_ptr<IAST> value;
+        std::shared_ptr<IAST> rhs_value;
 
-        ASTVariableDefinition(const Token &name, std::shared_ptr<IAST> type, std::shared_ptr<IAST> value, PositionRange position) :
-            name(name), type(type), value(value), IAST(ASTType::VariableDefinition, position) {};
+        ASTVariableDefinition(const Token &name, std::shared_ptr<IAST> type, std::shared_ptr<IAST> rhs_value, PositionRange position) :
+            name(name), type(type), rhs_value(rhs_value), IAST(ASTType::VariableDefinition, position) {};
 
         virtual void map(IASTVisitor &visitor) {
             visitor.map_variable_definition(*this);
@@ -217,8 +233,8 @@ class ASTVariableDefinition : public IAST {
                 this->type->map(visitor);
             }
 
-            if (this->value) {
-                this->value->map(visitor);
+            if (this->rhs_value) {
+                this->rhs_value->map(visitor);
             }
         };
 };
