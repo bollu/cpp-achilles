@@ -128,7 +128,7 @@ struct TSScope {
         static std::vector<TSType> types;
         //maps names to locations in the vector
         std::map<std::string, TypevarUUID> name_to_index_map;
-        
+
     public:
         TSScope *parent;
 
@@ -137,7 +137,7 @@ struct TSScope {
         bool has_type(const std::string &name);
         TSType get_symbol_type(const std::string &name);
         TSType get_symbol_type(const TypevarUUID &id);
-        
+
         TypevarUUID get_symbol_uuid(const std::string &name);
 };
 

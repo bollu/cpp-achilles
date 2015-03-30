@@ -55,7 +55,7 @@ struct TokenValue {
     std::unique_ptr<std::string> ptr_s;
     std::unique_ptr<long long> ptr_i;
     std::unique_ptr<long double> ptr_f;
-    
+
 
     TokenValue(std::string string) : ptr_s(new std::string(string)){};
     TokenValue(long long i) : ptr_i(new long long(i)){};
