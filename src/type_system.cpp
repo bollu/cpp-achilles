@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <sstream>
 #include <iostream>
+#include <iostream>
 
 
 
@@ -33,6 +34,11 @@ TSType TSScope::get_symbol_type(const TypevarUUID &id ){
     return this->types.at(id);
 };
 
+void TSScope::replace_type(const TypevarUUID &id, TSType new_type) {
+    assert(id >= 0 && id < this->types.size());
+    std::cout<<"\nreplacing: "<<this->types[id]<<" with "<<new_type;
+    this->types[id] = new_type;
+}
 TypevarUUID TSScope::get_symbol_uuid(const std::string &name) {
     auto it = this->name_to_index_map.find(name);
 
@@ -153,6 +159,7 @@ struct ASTTypeVariableCreator : public IASTVisitor {
             std::stringstream error;
             error<<"multiple definition of variable;";
             error<<"\nname: "<<var_name;
+            error<<"\ncurrent definition at: "<<variable_defn.position;
             error<<"\nprevious definition at: "<<scope->get_symbol_type(var_name).data.typevar->definition_pos;
 
 
@@ -224,18 +231,25 @@ class ASTSubsGenerator : public IASTVisitor {
     }
 };
 
-#include <iostream>
 
 class ASTSubsApplier : public IASTGenericVisitor {
 
     void map_ast(IAST &ast) {
         TSScope *scope = ast.ts_scope;
-        ast.ts_typevar_uuid = this->substitute_for_concrete_type(scope, ast.ts_typevar_uuid); 
+        TypevarUUID non_conrete_uuid = ast.ts_typevar_uuid;
+        
+        TypevarUUID concrete_uuid = this->substitute_for_concrete_type(scope, non_conrete_uuid); 
+    
+        std::cout<<"\nmapping:";
+        scope->replace_type(non_conrete_uuid, scope->get_symbol_type(concrete_uuid));
+        
+        ast.ts_typevar_uuid = concrete_uuid;
         ast.traverse_inner(*this);
     }
 
     TypevarUUID substitute_for_concrete_type(TSScope *scope, const TypevarUUID &base_uuid) {
 
+        assert(base_uuid >= 0);
         TypevarUUID seeker_uuid = base_uuid;
         while(scope->get_symbol_type(seeker_uuid).variant == TSVariant::TypeVariable) {
             assert(seeker_uuid >= 0);
@@ -248,9 +262,6 @@ class ASTSubsApplier : public IASTGenericVisitor {
 
 };
 
-void apply_substitutions(TSScope *scope) {
-    ERROR
-}
 
 //--------------------------------------------------
 //CONSTAINTS
@@ -318,7 +329,6 @@ void type_system_type_check(std::shared_ptr<IAST> &program) {
     ASTTypeVariableSetter type_applier;
     program->map(type_applier);
 
-    return;
 
 
 
@@ -331,6 +341,7 @@ void type_system_type_check(std::shared_ptr<IAST> &program) {
     program->map(subs_applier);
 
 
+    return;
     //constraints variable declaration
     ASTConstraintVariableDefinition constraint_var_defn;
     program->map(constraint_var_defn);

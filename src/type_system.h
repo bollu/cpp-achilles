@@ -137,8 +137,10 @@ struct TSScope {
         bool has_type(const std::string &name);
         TSType get_symbol_type(const std::string &name);
         TSType get_symbol_type(const TypevarUUID &id);
+        void replace_type(const TypevarUUID &id, TSType new_type);
 
         TypevarUUID get_symbol_uuid(const std::string &name);
+
 };
 
 

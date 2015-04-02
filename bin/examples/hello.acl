@@ -1,7 +1,3 @@
 fn main() -> i32 {
     let x = 32;
-    let y : string;
-    let z : i16;
-    let a = x;
-    let b = 32.45;
 }
