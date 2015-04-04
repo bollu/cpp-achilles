@@ -1,3 +1,4 @@
+
 #include "ast.h"
 #include <sstream>
 #include "assert.h"
@@ -20,11 +21,11 @@ enum class Precedence {
     Highest,
 
 };
+
 class ParserCursor {
     std::vector<Token> &tokens;
     PositionIndex index;
     Token eof_token;
-
 
     public:
     ParserCursor(std::vector<Token> &tokens, std::string &file_data) : tokens(tokens), index(0), eof_token(TokenType::Eof, PositionRange(file_data.size(), file_data.size(), file_data)) {}
@@ -174,7 +175,11 @@ class LiteralParserPrefix : public IParserPrefix {
     public:
 
         bool should_apply(const Token &t) const {
-            return t.type == TokenType::Identifier || t.type == TokenType::Int || t.type == TokenType::String || t.type == TokenType::Float;
+            return 
+            t.type == TokenType::Identifier || 
+            t.type == TokenType::LiteralInt || 
+            t.type == TokenType::LiteralString || 
+            t.type == TokenType::LiteralFloat;
         }
 
         std::shared_ptr<IAST> parse(Parser &parser) {
@@ -243,11 +248,11 @@ class FunctionDefinitionPrefix : public IParserPrefix {
         parser.cursor.expect(TokenType::OpenBracket, "expect ( after fn identifier");
         std::vector<ASTFunctionDefinition::Argument> args;
         while(parser.cursor.get().type != TokenType::CloseBracket) {
-            const Token &name = parser.cursor.advance();
+            std::shared_ptr<IAST> name = parser.parse(Precedence::Lowest);
             parser.cursor.expect(TokenType::Colon, ": needed to separate <id> and <type>");
             std::shared_ptr<IAST> type = parser.parse(Precedence::Lowest); 
 
-            args.push_back(std::pair<const Token&, std::shared_ptr<IAST>>(name, type));
+            args.push_back(std::make_pair(name, type));
         }
         parser.cursor.expect(TokenType::CloseBracket);
 
@@ -275,14 +280,17 @@ class VariableDefinitionPrefix : public IParserPrefix {
         PositionRange position = parser.cursor.get_current_range();
         const Token &let_token = parser.cursor.expect(TokenType::Let);
 
-        const Token &name = parser.cursor.advance();
 
+        std::shared_ptr<IAST> name = parser.parse(Precedence::Lowest);
+
+        
         std::shared_ptr<IAST> type = nullptr;
-        if (parser.cursor.get().type == TokenType::Colon) {
-            parser.cursor.expect(TokenType::Colon);
+        //you need the if  for the typing rule to be optional  
+        //if (parser.cursor.get().type == TokenType::Colon) {
+            parser.cursor.expect(TokenType::Colon, "expected : after variable name");
 
             type = parser.parse(Precedence::Highest);
-        }
+        //}
 
         std::shared_ptr<IAST> rhs_value = nullptr;
 

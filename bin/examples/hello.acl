@@ -1,3 +1,15 @@
-fn main() -> i32 {
-    let x = 32;
+32;
+"hello";
+10.14;
+
+let x : i32 = 1;
+let y : string = x;
+
+let abba : float = x; 
+{
+	let a : i32 = x;
+} 
+{
+	let a : string = "eqwe";
+	a;
 }

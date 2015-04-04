@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"var",
+				"variable_defn"
+			],
+			[
+				"varname",
+				"varname_to_decl"
+			],
+			[
 				"print",
 				"print_indent"
 			],
@@ -506,34 +514,31 @@
 			[
 				"clien",
 				"clientloginfilter"
-			],
-			[
-				"send",
-				"send_nth_login"
-			],
-			[
-				"login",
-				"login_promise"
 			]
 		]
 	},
 	"buffers":
 	[
-		{
-			"file": "/home/bollu/.vimrc",
-			"settings":
-			{
-				"buffer_size": 12962,
-				"line_ending": "Unix"
-			}
-		}
 	],
 	"build_system": "Packages/Python/Python.sublime-build",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
 	"command_palette":
 	{
 		"height": 375.0,
+		"last_filter": "rein",
 		"selected_items":
 		[
+			[
+				"rein",
+				"Indentation: Reindent Lines"
+			],
+			[
+				"rust",
+				"Set Syntax: Rust"
+			],
 			[
 				"disa",
 				"Package Control: Disable Package"
@@ -545,10 +550,6 @@
 			[
 				"side",
 				"View: Toggle Side Bar"
-			],
-			[
-				"rein",
-				"Indentation: Reindent Lines"
 			],
 			[
 				"insta",
@@ -633,10 +634,6 @@
 			[
 				"remo",
 				"Package Control: Remove Package"
-			],
-			[
-				"rust",
-				"Set Syntax: Rust"
 			],
 			[
 				"c++",
@@ -1074,15 +1071,22 @@
 	],
 	"file_history":
 	[
-		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
-		"/home/bollu/prog/cpp-achilles/.gitignore",
+		"/home/bollu/.config/sublime-text-3/Packages/User/Distraction Free.sublime-settings",
+		"/home/bollu/prog/cpp-achilles/src/ast.h",
 		"/home/bollu/prog/cpp-achilles/src/ast.cpp",
+		"/home/bollu/prog/cpp-achilles/src/main.cpp",
+		"/home/bollu/tmp/clang-fuckaround-can-delete/main.cpp",
+		"/home/bollu/prog/cpp-achilles/src/type_system.h",
 		"/home/bollu/prog/cpp-achilles/src/tokenizer.h",
 		"/home/bollu/prog/cpp-achilles/src/tokenizer.cpp",
-		"/home/bollu/prog/cpp-achilles/src/ast.h",
+		"/home/bollu/prog/cpp-achilles/bin/examples/hello.acl",
+		"/home/bollu/.vimrc",
+		"/home/bollu/prog/cpp-achilles/src/type_system.cpp",
+		"/home/bollu/tmp/clang-fuckaround-can-delete/msin",
+		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
+		"/home/bollu/prog/cpp-achilles/.gitignore",
 		"/home/bollu/prog/cpp-achilles/makefile",
 		"/home/bollu/prog/cpp-achilles/src/pretty_print.h",
-		"/home/bollu/prog/cpp-achilles/src/main.cpp",
 		"/home/bollu/prog/cpp-achilles/.ycm_extra_conf.py",
 		"/home/bollu/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
 		"/home/bollu/.config/sublime-text-3/Packages/User/C++YouCompleteMe.sublime-settings",
@@ -1095,7 +1099,6 @@
 		"/home/bollu/prog/gsoc-vispy/vispy/appveyor.yml",
 		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/gloo/animate_shape.py",
 		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/backends/_ipynb_static.py",
-		"/home/bollu/.vimrc",
 		"/home/bollu/prog/random-snippets/haskell-types/state.hs",
 		"/home/bollu/scripts/auto-net-reload.py",
 		"/home/bollu/.config/fish/config.fish",
@@ -1195,17 +1198,11 @@
 		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/tests/test_use_gloo.py",
 		"/home/bollu/prog/gsoc-vispy/vispy/examples/tutorial/gl/fireworks.py",
 		"/home/bollu/.config/sublime-text-3/Packages/SublimeLinter/SublimeLinter.sublime-settings",
-		"/home/bollu/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/gloo/glir.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/tests/test_meshdata.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/tests/test_generation.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_qt.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/tests/test_interactive.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/visuals/components/texture.py"
+		"/home/bollu/.config/sublime-text-3/Packages/User/SublimeLinter.sublime-settings"
 	],
 	"find":
 	{
-		"height": 36.0
+		"height": 35.0
 	},
 	"find_in_files":
 	{
@@ -1238,6 +1235,26 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"Variable",
+			"unknown iden",
+			"IdentifierTyper",
+			"get_symbol_type",
+			"String",
+			"Type",
+			"LiteralParserPrefix",
+			"keyword",
+			"keywords",
+			"add_type_for",
+			"create_new_type_for_variable",
+			"create_",
+			"add_type",
+			"has_variable",
+			"get_variable_type",
+			"variable",
+			"create_new_type_for_variable",
+			"has_variable",
+			"get_variable_type",
+			"create_new_type_for_variable",
 			"set",
 			"AFTER_LOGIN_SLEEP_TIME",
 			"ASTBlock",
@@ -1345,27 +1362,7 @@
 			"LinePlot",
 			"class LinePlot",
 			"def set_data",
-			"set_data",
-			"class LineVisual",
-			"pos",
-			"class LineVisual",
-			"_line_kwds",
-			"class LinePlot",
-			"is_logged_in",
-			"try_login_with_accounts",
-			"AFTER_LOGIN_SLEEP_TIME",
-			"def _unit",
-			"fdef _unit",
-			"1",
-			" == ",
-			"assert",
-			"def assert_array_equal",
-			"assert_array_equal",
-			"0.5",
-			"running 110",
-			"running",
-			"def _hsv_to_rgb",
-			"colorarray"
+			"set_data"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1402,44 +1399,14 @@
 	"groups":
 	[
 		{
-			"selected": 0,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "/home/bollu/.vimrc",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 12962,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								459,
-								459
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 0,
-					"type": "text"
-				}
 			]
 		}
 	],
 	"incremental_find":
 	{
-		"height": 24.0
+		"height": 26.0
 	},
 	"input":
 	{
@@ -1524,23 +1491,53 @@
 	{
 		"height": 134.0
 	},
+	"pinned_build_system": "",
 	"project": "cpp-achilles.sublime-project",
 	"replace":
 	{
-		"height": 44.0
+		"height": 48.0
 	},
 	"save_all_on_build": true,
 	"select_file":
 	{
 		"height": 0.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
-				"tokenizer.cpp",
-				"src/tokenizer.cpp"
+				"tye",
+				"src/type_system.h"
+			],
+			[
+				".acl",
+				"bin/examples/hello.acl"
+			],
+			[
+				"ast.cpp",
+				"src/ast.cpp"
+			],
+			[
+				"ast",
+				"src/ast.h"
 			],
 			[
 				"token",
+				"src/tokenizer.h"
+			],
+			[
+				"ast.c",
+				"src/ast.cpp"
+			],
+			[
+				"main",
+				"src/main.cpp"
+			],
+			[
+				"type",
+				"src/type_system.h"
+			],
+			[
+				"tokenizer.cpp",
 				"src/tokenizer.cpp"
 			],
 			[
@@ -1572,14 +1569,6 @@
 				".ycm_extra_conf.py"
 			],
 			[
-				"main",
-				"src/main.cpp"
-			],
-			[
-				"ast.cpp",
-				"src/ast.cpp"
-			],
-			[
 				"pre",
 				"src/pretty_print.h"
 			],
@@ -1588,16 +1577,8 @@
 				"makefile"
 			],
 			[
-				"ast",
-				"ast.h"
-			],
-			[
 				"pr",
 				"pretty_print.h"
-			],
-			[
-				"ast.c",
-				"ast.cpp"
 			],
 			[
 				"test_",
@@ -1796,10 +1777,6 @@
 				"vispy/gloo/texture.py"
 			],
 			[
-				".acl",
-				"examples/hello_world.acl"
-			],
-			[
 				"sa",
 				"src/ast.rs"
 			],
@@ -1816,10 +1793,6 @@
 				"examples/hello_world.acl"
 			],
 			[
-				"type",
-				"src/type_walkers.rs"
-			],
-			[
 				"types",
 				"src/types.rs"
 			],
@@ -1830,10 +1803,6 @@
 			[
 				"man",
 				"src/main.rs"
-			],
-			[
-				"tye",
-				"src/type_checker.rs"
 			],
 			[
 				"hello",
@@ -2053,6 +2022,7 @@
 	"select_project":
 	{
 		"height": 500.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -2085,6 +2055,7 @@
 	"select_symbol":
 	{
 		"height": 375.0,
+		"last_filter": "",
 		"selected_items":
 		[
 			[
@@ -2101,7 +2072,7 @@
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 262.0,
 	"status_bar_visible": true,
 	"template_settings":

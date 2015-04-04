@@ -44,11 +44,15 @@ void ASTPrettyPrinter::print_indent() {
 
 void ASTPrettyPrinter::map_literal(ASTLiteral &literal) {
     this->out<<literal.token;
-    //this->out<<"<-";
-    this->out<<":"; 
-    if(literal.ts_typevar_uuid >= 0) {
-        this->out<<literal.ts_scope->get_symbol_type(literal.ts_typevar_uuid);
+    if(literal.ts_data && literal.ts_data->type) {
+        this->out<<"@"<<*literal.ts_data->type;
     }
+    /*
+    if(literal.ts_data) {
+        this->out<<" s|"<<literal.ts_data->scope;
+        
+    }*/
+    //this->out<<"@"; 
 
 };
 
@@ -99,7 +103,7 @@ void ASTPrettyPrinter::map_fn_definition(ASTFunctionDefinition &fn_defn){
     int commas_count = fn_defn.args.size() - 1;
 
     for (auto arg: fn_defn.args) {
-        out<<arg.first;
+        arg.first->map(*this);
         out<<" ";
         arg.second->map(*this);
 
@@ -118,7 +122,7 @@ void ASTPrettyPrinter::map_fn_definition(ASTFunctionDefinition &fn_defn){
 
 void ASTPrettyPrinter::map_variable_definition(ASTVariableDefinition &defn) {
     out<<"let ";
-    out<<defn.name;
+    defn.name->map(*this);
 
     if(defn.type) {
         out<<" : ";

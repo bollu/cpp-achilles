@@ -98,9 +98,11 @@ std::ostream& operator <<(std::ostream &out, const TokenType &token_type) {
         case TokenType::Undecided:
             out<<"un-";
             break;
-        case TokenType::String:
-        case TokenType::Int:
-        case TokenType::Float:
+
+        
+        case TokenType::LiteralString:
+        case TokenType::LiteralInt:
+        case TokenType::LiteralFloat:
             break;
     };
     return out;
@@ -184,6 +186,7 @@ const std::map<std::string, TokenType> keywords_map = {
     {"else", TokenType::Else},
     {"for", TokenType::For},
     {"fn", TokenType::Fn},
+
 };
 
 
@@ -233,7 +236,7 @@ std::vector<Token> tokenize_string(std::string &s) {
             };
             //skip over the closing quotes
             i++;
-            tokens.push_back(Token(TokenType::String, string, PositionRange(begin, i, s)));
+            tokens.push_back(Token(TokenType::LiteralString, string, PositionRange(begin, i, s)));
 
         }
         //numbers
@@ -248,11 +251,11 @@ std::vector<Token> tokenize_string(std::string &s) {
 
             if (is_int) {
                 long long num_i = std::stoll(number_string.c_str());
-                tokens.push_back(Token(TokenType::Int, num_i, PositionRange(begin, i, s)));
+                tokens.push_back(Token(TokenType::LiteralInt, num_i, PositionRange(begin, i, s)));
 
             } else {
                 long double num_f = std::stold(number_string.c_str());
-                tokens.push_back(Token(TokenType::Float, num_f, PositionRange(begin, i, s)));
+                tokens.push_back(Token(TokenType::LiteralFloat, num_f, PositionRange(begin, i, s)));
 
             }
         }

@@ -4,6 +4,7 @@
 #include "type_system.h"
 #include "assert.h"
 
+class IAST;
 class IASTVisitor;
 class ASTRoot;
 class ASTLiteral;
@@ -30,13 +31,10 @@ enum class ASTType {
 
 class IAST {
     protected:
-        IAST(ASTType ast_type, PositionRange position) : ast_type(ast_type), position(position), ts_typevar_uuid(-42), ts_scope(nullptr){};
+        IAST(ASTType ast_type, PositionRange position) : position(position), ts_data(nullptr) {};
     public:
-        ASTType ast_type;
-        //uuid of the typevar of this AST
-        TypevarUUID ts_typevar_uuid;
-        TSScope* ts_scope;
         PositionRange position;
+        std::shared_ptr<TSASTData> ts_data;
 
         //calls the correct version of the visit on the visitor
         virtual void map(IASTVisitor &visitor) = 0;
@@ -164,7 +162,7 @@ class ASTLiteral : public IAST {
 
 class ASTFunctionDefinition : public IAST {
     public:
-        typedef std::pair<const Token&, std::shared_ptr<IAST>> Argument;
+        typedef std::pair<std::shared_ptr<IAST>, std::shared_ptr<IAST>> Argument;
         const Token  &fn_name;
         std::vector<Argument> args;
 
@@ -188,7 +186,13 @@ class ASTFunctionDefinition : public IAST {
         };
 
         virtual void traverse_inner(IASTVisitor &visitor) {
+            for (auto arg : args) {
+               arg.first->map(visitor); 
+               arg.second->map(visitor); 
+            }
             this->body->map(visitor);
+
+            this->return_type->map(visitor);
         };
 };
 
@@ -217,11 +221,11 @@ class ASTFunctionCall : public IAST {
 
 class ASTVariableDefinition : public IAST {
     public:
-        const Token &name;
+        std::shared_ptr<IAST> name;
         std::shared_ptr<IAST> type;
         std::shared_ptr<IAST> rhs_value;
 
-        ASTVariableDefinition(const Token &name, std::shared_ptr<IAST> type, std::shared_ptr<IAST> rhs_value, PositionRange position) :
+        ASTVariableDefinition(std::shared_ptr<IAST> name, std::shared_ptr<IAST> type, std::shared_ptr<IAST> rhs_value, PositionRange position) :
             name(name), type(type), rhs_value(rhs_value), IAST(ASTType::VariableDefinition, position) {};
 
         virtual void map(IASTVisitor &visitor) {
@@ -229,6 +233,9 @@ class ASTVariableDefinition : public IAST {
         };
 
         virtual void traverse_inner(IASTVisitor &visitor) {
+            assert(this->name);
+            this->name->map(visitor);
+
             if (this->type) {
                 this->type->map(visitor);
             }

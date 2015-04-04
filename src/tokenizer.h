@@ -38,13 +38,13 @@ enum class TokenType {
     For,
     Let,
     Fn,
-
+    //
     //identifiers
     Identifier,
     //"typed" tokens
-    Float,
-    Int,
-    String,
+    LiteralFloat,
+    LiteralInt,
+    LiteralString,
     //undecided - will be resolved in the next stage
     Undecided,
     //EOF

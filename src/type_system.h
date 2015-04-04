@@ -1,147 +1,150 @@
 #pragma once
-#include <memory>
-#include <ostream>
-#include <vector>
 #include <map>
-#include <assert.h>
-
+#include <vector>
+#include <memory>
 #include "file_handling.h"
 
 class IAST;
-enum class TSVariant;
-struct  TSTypeData;
+
 struct TSType;
 struct TSScope;
-
-typedef long long TypevarUUID;
-
-enum class TSVariant {
-    AbstractInt,
-    SizedInt,
-    AbstractFloat,
-    SizedFloat,
-    TypeVariable,
-    Void,
-    Uninitialized,
-    String,
-};
-
-
-struct TSTypevar {
-    //uuid for a type variable
-    int32_t uuid;
-    //total uuid's ever generated
-    static int32_t static_uuid_count;
-    //position where this was defined
-    PositionRange definition_pos;
-
-    TypevarUUID substitution_uuid;
-
-    TSTypevar(PositionRange definition_pos) : definition_pos(definition_pos), substitution_uuid(-42) {
-        this->uuid = static_uuid_count;
-        static_uuid_count++;
-    }
-
-    private:
-    //TSTypevar(const TSTypevar &other) = delete;
-    //TSTypevar& operator = (const TSTypevar &other) = delete;
-};
-
-struct TSTypeData {
-    int size;
-    //not owning
-    TSTypevar* typevar;
-
-
-    TSTypeData() : size(-42), typevar(nullptr) {};
-    TSTypeData(TSTypevar *typevar) : typevar(typevar), size(-42) {};
-    TSTypeData(int size) : size(size), typevar(nullptr) {};
-};
+struct TSContext;
+struct TSASTData;
 
 struct TSType {
-    TSVariant variant;
-    TSTypeData data;
-    //TSScope *scope;
-
-    bool operator == (const TSType &other) {
-        if(this->variant != other.variant) {
-            return false;
-        }
-
-        if(this->variant == TSVariant::SizedInt || this->variant == TSVariant::SizedFloat) {
-            return this->data.size == other.data.size;
-        }
-
-        if(this->variant == TSVariant::TypeVariable) {
-            return this->data.typevar->uuid == other.data.typevar->uuid;
-        }
-        return true;
-    };
-
-    bool operator != (const TSType &other) {
-        return !(*this == other);
-    };
-
     public:
-    static TSType AbstractInt() {
-        return TSType(TSVariant::AbstractInt);
-    }
-    static TSType AbstractFloat() {
-        return TSType(TSVariant::AbstractFloat);
-    }
-    static TSType Void() {
-        return TSType(TSVariant::Void);
-    }
-    static TSType String() {
-        return TSType(TSVariant::String);
-    }
-    static TSType SizedInt(int size) {
-        return TSType(TSVariant::SizedInt, size);
-    }
-    static TSType SizedFloat(int size) {
-        return TSType(TSVariant::SizedFloat, size);
-    }
-    static TSType Typevar(const PositionRange &definition_pos) {
-        TSTypevar *typevar = new TSTypevar(definition_pos);
-        return TSType(typevar); 
-    }
-    private:
-    TSType(TSVariant variant) : variant(variant){};
-    TSType(TSVariant variant, int size) : variant(variant), data(size) {};
-    TSType(TSTypevar *typevar) : variant(TSVariant::TypeVariable), data(typevar) {};
+        enum class Variant {
+            Void,
+            String,
+            Int, //abstract int to be unified
+            Float, //abstract float to be unified
+            Int32,
+        } variant;
 
+    private:
+        friend class TSScope;
+        friend class TSContext;
+
+        TSType(Variant variant) : variant(variant){};
 };
 
-std::ostream& operator <<(std::ostream &out, const TSType &type);
+std::ostream &operator <<(std::ostream &out, const TSType &type);
 
-
+struct TSDeclaration {
+    std::unique_ptr<IAST> decl_ast;
+    TSType type;
+    
+    TSDeclaration(IAST &decl_ast, TSType type) : decl_ast(&decl_ast), type(type) {};
+    TSDeclaration(TSType type) : decl_ast(nullptr), type(type) {};
+};
 
 struct TSScope {
-    private:
-        // the TSType vector _has_ to be static since the UUID's
-        // must be sequential.
-        // otheriwse, scope 1 may have 1 element in it's types
-        // and there could be a type that belongs to (Scope 2) with of (UUID 100)
-        // so when you index types on (Scope 1), it fails.
-        // if it is static, then the (UUID 100) type will go and
-        // index at the static vector
-        static std::vector<TSType> types;
-        //maps names to locations in the vector
-        std::map<std::string, TypevarUUID> name_to_index_map;
-
     public:
-        TSScope *parent;
+        TSDeclaration& get_type_decl(const std::string &name) {
+            auto it = this->typename_to_type.find(name);
+            if (it != this->typename_to_type.end()) {
+                return *it->second.get();
+            } else {
+                if (this->parent != nullptr) {
+                    return this->parent->get_type_decl(name);
+                } else {
+                    assert(false && "do not have type");
+                }
+            }
+        };
 
-        TSScope(TSScope *parent) : parent(parent) {}
-        TypevarUUID add_symbol(std::string name, TSType type);
-        bool has_type(const std::string &name);
-        TSType get_symbol_type(const std::string &name);
-        TSType get_symbol_type(const TypevarUUID &id);
-        void replace_type(const TypevarUUID &id, TSType new_type);
+        TSDeclaration& get_variable_decl(const std::string &name) {
+            auto it = this->varname_to_var.find(name);
+            if (it != this->varname_to_var.end()) {
+                return *it->second.get();
+            } else {
+                if (this->parent != nullptr) {
+                    return this->parent->get_variable_decl(name);
+                } else {
+                    assert(false && "do not have type");
+                }
+            }
+        };
 
-        TypevarUUID get_symbol_uuid(const std::string &name);
+        bool has_type(const std::string &name) {
+            auto it = this->typename_to_type.find(name);
+            if (it == this->typename_to_type.end()) {
+                if (this->parent == nullptr) {
+                    return false;
+                } else {
+                    return this->parent->has_type(name);
+                }
+            } else {
+                return true;
+            }
+        };
 
+        bool has_variable(const std::string &name) {
+            auto it = this->varname_to_var.find(name);
+            if (it == this->varname_to_var.end()) {
+                if (this->parent == nullptr) {
+                    return false;
+                } else {
+                    return this->parent->has_variable(name);
+                }
+            } else {
+                return true;
+            }
+        };
+
+        void add_variable_decl(const std::string &name, std::unique_ptr<TSDeclaration> decl){
+            assert(!this->has_variable(name));
+            this->varname_to_var[name] = std::move(decl);
+        };
+
+        void add_type_decl(const std::string &name, std::unique_ptr<TSDeclaration> decl) {
+            assert(!this->has_type(name));
+            this->typename_to_type[name] = std::move(decl);
+        };
+    private:
+        TSScope* parent;
+        TSScope(TSScope *parent) : parent(parent) {};
+    
+        std::map<std::string, std::unique_ptr<TSDeclaration>> typename_to_type;
+        std::map<std::string, std::unique_ptr<TSDeclaration>> varname_to_var;
+
+        friend class TSContext;
 };
 
 
-void type_system_type_check(std::shared_ptr<IAST> &program);
+struct TSContext {
+    private:
+        //we need to store a vector of pointers since references to a frikkin
+        //STL vector may get invalidated.
+        std::vector<std::shared_ptr<TSScope>> scopes;
+    public:
+        TSContext() {
+            auto root_scope = std::shared_ptr<TSScope>(new TSScope(nullptr));
+
+            root_scope->add_type_decl("i32", std::unique_ptr<TSDeclaration>(new TSDeclaration(TSType(TSType::Variant::Int32))));
+            root_scope->add_type_decl("int", std::unique_ptr<TSDeclaration>(new TSDeclaration(TSType(TSType::Variant::Int))));
+            root_scope->add_type_decl("float", std::unique_ptr<TSDeclaration>(new TSDeclaration(TSType(TSType::Variant::Float))));
+            root_scope->add_type_decl("void", std::unique_ptr<TSDeclaration>(new TSDeclaration(TSType(TSType::Variant::Void))));
+            root_scope->add_type_decl("string", std::unique_ptr<TSDeclaration>(new TSDeclaration(TSType(TSType::Variant::String))));
+
+            scopes.push_back(root_scope);
+        };
+
+        TSScope* get_root_scope() {
+            return this->scopes.at(0).get();
+        }; 
+
+        TSScope *create_child_scope(TSScope *parent) {
+            scopes.push_back(std::shared_ptr<TSScope>(new TSScope(parent)));
+            return this->scopes[this->scopes.size() - 1].get();
+        }
+};
+
+struct TSASTData {
+    TSScope *scope;
+    TSType *type;
+
+    TSASTData(TSScope *scope) : scope(scope), type(nullptr) {};
+};
+
+TSContext type_system_type_check(std::shared_ptr<IAST> root);

@@ -59,8 +59,7 @@ std::string get_line(std::string &file_data, int line_number) {
 
         begin_index++;
     }
-    //skip over the found \n
-    begin_index++;
+
     int end_index = begin_index;
 
     while(file_data[end_index] != '\n') {
@@ -96,7 +95,7 @@ std::ostream& operator<<(std::ostream &out, const PositionRange &range) {
         out<<"^";
         current_col++;
         
-        for(; current_col < end_line_col.second - 1; current_col++) {
+        for(; current_col < end_line_col.second; current_col++) {
             out<<"~";
         }
 

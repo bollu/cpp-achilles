@@ -20,7 +20,6 @@ int main(int argc, char **argv) {
     assert(argc == 2 && "expected input file path");
 
     std::ifstream input_file(argv[1]);
-        
     std::string file_data( (std::istreambuf_iterator<char>(input_file)), (std::istreambuf_iterator<char>()));
 
     //std::string file_data(argv[1]);
@@ -32,9 +31,10 @@ int main(int argc, char **argv) {
         std::cout<<token<<" ";
     }
 
-    std::cout<<"\nparsing:\n";
+    std::cout<<"\nparsing";
     std::shared_ptr<IAST> ast = parse(tokens, file_data);
-    type_system_type_check(ast);
+    std::cout<<"\ntype checking";
+    TSContext ctx = type_system_type_check(ast);
 
     std::cout<<pretty_print(*ast);
 
