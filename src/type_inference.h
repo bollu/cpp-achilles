@@ -3,4 +3,4 @@
 
 class IAST;
 
-void infer_types(std::shared_ptr<IAST> &root);
+void infer_types(std::shared_ptr<IAST>& root);
