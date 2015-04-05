@@ -176,10 +176,10 @@ class LiteralParserPrefix : public IParserPrefix {
 
         bool should_apply(const Token &t) const {
             return 
-            t.type == TokenType::Identifier || 
-            t.type == TokenType::LiteralInt || 
-            t.type == TokenType::LiteralString || 
-            t.type == TokenType::LiteralFloat;
+                t.type == TokenType::Identifier || 
+                t.type == TokenType::LiteralInt || 
+                t.type == TokenType::LiteralString || 
+                t.type == TokenType::LiteralFloat;
         }
 
         std::shared_ptr<IAST> parse(Parser &parser) {
@@ -247,14 +247,14 @@ class FunctionDefinitionPrefix : public IParserPrefix {
 
         parser.cursor.expect(TokenType::OpenBracket, "expect ( after fn identifier");
         std::vector<ASTFunctionDefinition::Argument> args;
-        
+
         while(true) {
             std::shared_ptr<IAST> name = parser.parse(Precedence::Lowest);
             parser.cursor.expect(TokenType::Colon, ": needed to separate <id> and <type>");
             std::shared_ptr<IAST> type = parser.parse(Precedence::Lowest); 
 
             args.push_back(std::make_pair(name, type));
-        
+
             if (parser.cursor.get().type == TokenType::CloseBracket) {
                 break;
             }
@@ -290,13 +290,13 @@ class VariableDefinitionPrefix : public IParserPrefix {
 
         std::shared_ptr<IAST> name = parser.parse(Precedence::Lowest);
 
-        
+
         std::shared_ptr<IAST> type = nullptr;
         //you need the if  for the typing rule to be optional  
         //if (parser.cursor.get().type == TokenType::Colon) {
-            parser.cursor.expect(TokenType::Colon, "expected : after variable name");
+        parser.cursor.expect(TokenType::Colon, "expected : after variable name");
 
-            type = parser.parse(Precedence::Highest);
+        type = parser.parse(Precedence::Highest);
         //}
 
         std::shared_ptr<IAST> rhs_value = nullptr;

@@ -12,7 +12,9 @@
     let y : i32 = 10.03;
     let z :i32 = y;
     let k : float = y;
-    let k : string = "qwe";
+    {
+        let a : i32 = y;
+    }
 }
 #fn main(y : i32, z : string) -> i32 {
 #    y;z;a;

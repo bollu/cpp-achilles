@@ -198,19 +198,8 @@ class Typer : public IASTVisitor {
                     TSScope *scope = literal.ts_data->scope;
                     std::string &name = *literal.token.value.ptr_s;
                     
-                    std::cout<<"\ntyping: "<<name<<"\n\n";
-                    //has to be a type or an identifier. give higher preference to types
-                    /*if (scope->has_type(name)) {
-                        TSType &type = get_type_for_type_literal(literal);
-                        literal.ts_data->type = &type;
-                        break;
-                    }
-
-                    else {*/
                     TSType &type = get_type_for_var_literal(literal);
                     literal.ts_data->type = &type;
-                
-                    //}
                     break;
                 }
             case TokenType::LiteralString:
