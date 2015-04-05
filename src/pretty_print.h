@@ -44,15 +44,11 @@ void ASTPrettyPrinter::print_indent() {
 
 void ASTPrettyPrinter::map_literal(ASTLiteral &literal) {
     this->out<<literal.token;
+
+    this->out<<"|s-"<<literal.ts_data->scope;
     if(literal.ts_data && literal.ts_data->type) {
         this->out<<"@"<<*literal.ts_data->type;
     }
-    /*
-    if(literal.ts_data) {
-        this->out<<" s|"<<literal.ts_data->scope;
-        
-    }*/
-    //this->out<<"@"; 
 
 };
 

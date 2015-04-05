@@ -1,15 +1,23 @@
-32;
+10;
+20.0;
 "hello";
-10.14;
 
-let x : i32 = 1;
-let y : string = x;
 
-let abba : float = x; 
 {
-	let a : i32 = x;
-} 
-{
-	let a : string = "eqwe";
-	a;
+#    a;
+#    b;
+#    c;
 }
+{
+    let y : i32 = 10.03;
+    let z :i32 = y;
+    let k : float = y;
+    let k : string = "qwe";
+}
+#fn main(y : i32, z : string) -> i32 {
+#    y;z;a;
+#    { x; 
+#    }
+#}
+
+#main (y, z);

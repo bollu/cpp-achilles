@@ -15,7 +15,6 @@ struct PositionRange {
             assert(start <= end);
         }
 
-    
     PositionRange extend_end(PositionRange extended);
     PositionRange& operator =(const PositionRange &other); 
 };

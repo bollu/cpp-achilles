@@ -125,7 +125,12 @@ std::ostream& operator <<(std::ostream &out, const TokenValue &token_value) {
 
 
 std::ostream& operator <<(std::ostream &out, const Token &token) {
-    out<<token.type<<token.value;
+    if(token.type == TokenType::LiteralString) {
+        out<<"\""<<token.value<<"\"";
+    }
+    else {
+        out<<token.type<<token.value;
+    };
     return out;
 }
 

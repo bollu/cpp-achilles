@@ -247,12 +247,19 @@ class FunctionDefinitionPrefix : public IParserPrefix {
 
         parser.cursor.expect(TokenType::OpenBracket, "expect ( after fn identifier");
         std::vector<ASTFunctionDefinition::Argument> args;
-        while(parser.cursor.get().type != TokenType::CloseBracket) {
+        
+        while(true) {
             std::shared_ptr<IAST> name = parser.parse(Precedence::Lowest);
             parser.cursor.expect(TokenType::Colon, ": needed to separate <id> and <type>");
             std::shared_ptr<IAST> type = parser.parse(Precedence::Lowest); 
 
             args.push_back(std::make_pair(name, type));
+        
+            if (parser.cursor.get().type == TokenType::CloseBracket) {
+                break;
+            }
+            parser.cursor.expect(TokenType::Comma);
+
         }
         parser.cursor.expect(TokenType::CloseBracket);
 
