@@ -23,4 +23,4 @@ build: dummy src/*
 	 #$(CLANG_OBJ) -c src/pretty_print.cpp  -o build/pretty_print.o
 
 uncrustify: dummy src/*
-	uncrustify -c uncrustify/ben.cfg --replace --no-backup files s
+	uncrustify -c uncrustify/ben.cfg --replace --no-backup  src/*
