@@ -32,247 +32,272 @@ enum class ASTType
 
 class IAST {
 protected:
-IAST(ASTType ast_type, PositionRange position) : position(position), ts_data(nullptr){
-}
+
+    IAST(ASTType ast_type, PositionRange position) : type(ast_type), position(
+            position),
+        ts_data(nullptr) {}
+
 public:
-PositionRange              position;
-std::shared_ptr<TSASTData> ts_data;
 
-//calls the correct version of the visit on the visitor
-virtual void map(IASTVisitor& visitor) = 0;
+    PositionRange position;
+    std::shared_ptr<TSASTData>ts_data;
+    ASTType type;
 
-//recurses the traversal on sub elements
-virtual void traverse_inner(IASTVisitor& visitor) = 0;
+    // calls the correct version of the visit on the visitor
+    virtual void dispatch(IASTVisitor& visitor) = 0;
+
+    // recurses the traversal on sub elements
+    virtual void traverse_inner(IASTVisitor& visitor) = 0;
 };
 
-//visitor
+// visitor
 class IASTVisitor {
 public:
-virtual void map_root(ASTRoot& root);
-virtual void map_literal(ASTLiteral& literal);
-virtual void map_block(ASTBlock& block);
-virtual void map_infix_expr(ASTInfixExpr& infix);
-virtual void map_prefix_expr(ASTPrefixExpr& prefix);
-virtual void map_statement(ASTStatement& statement);
-virtual void map_fn_definition(ASTFunctionDefinition& fn_defn);
-virtual void map_fn_call(ASTFunctionCall& fn_call);
-virtual void map_variable_definition(ASTVariableDefinition& variable_defn);
+
+    virtual void inspect_root(ASTRoot& root);
+    virtual void inspect_literal(ASTLiteral& literal);
+    virtual void inspect_block(ASTBlock& block);
+    virtual void inspect_infix_expr(ASTInfixExpr& infix);
+    virtual void inspect_prefix_expr(ASTPrefixExpr& prefix);
+    virtual void inspect_statement(ASTStatement& statement);
+    virtual void inspect_fn_definition(ASTFunctionDefinition& fn_defn);
+    virtual void inspect_fn_call(ASTFunctionCall& fn_call);
+    virtual void inspect_variable_definition(
+        ASTVariableDefinition& variable_defn);
 };
 
-//provides a map_ast that lets you map over any generic ast type;
-////NOTE - all of the map_* internally call map_ast for this effect
+// provides a inspect_ast that lets you map over any generic ast type;
+////NOTE - all of the inspect_* internally call map_ast for this effect
 class IASTGenericVisitor : public IASTVisitor {
 public:
-virtual void map_ast(IAST& ast) = 0;
 
-virtual void map_root(ASTRoot& root);
-virtual void map_literal(ASTLiteral& literal);
-virtual void map_block(ASTBlock& block);
-virtual void map_infix_expr(ASTInfixExpr& infix);
-virtual void map_prefix_expr(ASTPrefixExpr& prefix);
-virtual void map_statement(ASTStatement& statement);
-virtual void map_fn_definition(ASTFunctionDefinition& fn_defn);
-virtual void map_fn_call(ASTFunctionCall& fn_call);
-virtual void map_variable_definition(ASTVariableDefinition& variable_defn);
+    virtual void inspect_ast(IAST& ast) = 0;
+
+    virtual void inspect_root(ASTRoot& root);
+    virtual void inspect_literal(ASTLiteral& literal);
+    virtual void inspect_block(ASTBlock& block);
+    virtual void inspect_infix_expr(ASTInfixExpr& infix);
+    virtual void inspect_prefix_expr(ASTPrefixExpr& prefix);
+    virtual void inspect_statement(ASTStatement& statement);
+    virtual void inspect_fn_definition(ASTFunctionDefinition& fn_defn);
+    virtual void inspect_fn_call(ASTFunctionCall& fn_call);
+    virtual void inspect_variable_definition(
+        ASTVariableDefinition& variable_defn);
 };
 
 class ASTPrefixExpr : public IAST {
 public:
-const Token&          op;
-std::shared_ptr<IAST> expr;
 
-ASTPrefixExpr(const Token& op, std::shared_ptr<IAST> expr, PositionRange position) :
-    op(op), expr(expr), IAST(ASTType::PrefixExpr, position){
-}
+    const Token&          op;
+    std::shared_ptr<IAST>expr;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_prefix_expr(*this);
-}
+    ASTPrefixExpr(const Token          & op,
+                  std::shared_ptr<IAST>expr,
+                  PositionRange        position) : op(op), expr(expr), IAST(
+            ASTType::PrefixExpr,
+            position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    expr->map(visitor);
-}
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_prefix_expr(*this);
+    }
+
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        expr->dispatch(visitor);
+    }
 };
 
 class ASTInfixExpr : public IAST {
 public:
-const Token&          op;
-std::shared_ptr<IAST> left;
-std::shared_ptr<IAST> right;
 
-ASTInfixExpr(std::shared_ptr<IAST> left, const Token& op, std::shared_ptr<IAST> right, PositionRange position) :
-    left(left), op(op), right(right), IAST(ASTType::InfixExpr, position){
-}
+    const Token&          op;
+    std::shared_ptr<IAST>left;
+    std::shared_ptr<IAST>right;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_infix_expr(*this);
-}
+    ASTInfixExpr(std::shared_ptr<IAST>left,
+                 const Token          & op,
+                 std::shared_ptr<IAST>right,
+                 PositionRange        position) :
+        left(left), op(op), right(right), IAST(ASTType::InfixExpr, position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    left->map(visitor);
-    right->map(visitor);
-}
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_infix_expr(*this);
+    }
+
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        left->dispatch(visitor);
+        right->dispatch(visitor);
+    }
 };
 
 class ASTStatement : public IAST {
 public:
-std::shared_ptr<IAST> inner;
 
-ASTStatement(std::shared_ptr<IAST> inner, PositionRange position) :
-    inner(inner), IAST(ASTType::Statement, position){
-}
+    std::shared_ptr<IAST>inner;
 
+    ASTStatement(std::shared_ptr<IAST>inner, PositionRange position) :
+        inner(inner), IAST(ASTType::Statement, position) {}
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_statement(*this);
-}
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_statement(*this);
+    }
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    inner->map(visitor);
-}
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        inner->dispatch(visitor);
+    }
 };
 
 class ASTBlock : public IAST {
 public:
-std::vector<std::shared_ptr<IAST> > statements;
-std::shared_ptr<IAST>               return_expr;
 
-ASTBlock(std::vector<std::shared_ptr<IAST> > statements, std::shared_ptr<IAST> return_expr, PositionRange position) :
-    statements(statements), return_expr(return_expr), IAST(ASTType::Block, position){
-}
+    std::vector<std::shared_ptr<IAST> >statements;
+    std::shared_ptr<IAST>return_expr;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_block(*this);
-}
+    ASTBlock(std::vector<std::shared_ptr<IAST> >statements,
+             std::shared_ptr<IAST>              return_expr,
+             PositionRange                      position) :
+        statements(statements), return_expr(return_expr), IAST(ASTType::Block,
+                                                               position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    for (auto statement: this->statements) {
-        statement->map(visitor);
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_block(*this);
     }
-}
+
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        for (auto statement: this->statements) {
+            statement->dispatch(visitor);
+        }
+    }
 };
 
 class ASTLiteral : public IAST {
 public:
-const Token& token;
 
-ASTLiteral(const Token& token, PositionRange position) :
-    token(token), IAST(ASTType::Literal, position){
-}
+    const Token& token;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_literal(*this);
-}
+    ASTLiteral(const Token& token, PositionRange position) :
+        token(token), IAST(ASTType::Literal, position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-}
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_literal(*this);
+    }
+
+    virtual void traverse_inner(IASTVisitor& visitor) {}
 };
 
 class ASTFunctionDefinition : public IAST {
 public:
-typedef std::pair<std::shared_ptr<IAST>, std::shared_ptr<IAST> >   Argument;
-const Token&          fn_name;
-std::vector<Argument> args;
 
-std::shared_ptr<IAST> body;
-std::shared_ptr<IAST> return_type;
+    typedef std::pair<std::shared_ptr<IAST>, std::shared_ptr<IAST> >Argument;
+    const Token&          fn_name;
+    std::vector<Argument>args;
 
-ASTFunctionDefinition(const Token&          fn_name,
-                      std::vector<Argument> args,
-                      std::shared_ptr<IAST> return_type,
-                      std::shared_ptr<IAST> body,
-                      PositionRange position) :
-    fn_name(fn_name),
-    args(args),
-    return_type(return_type),
-    body(body),
-    IAST(ASTType::FunctionDefinition, position){
-}
+    std::shared_ptr<IAST>body;
+    std::shared_ptr<IAST>return_type;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_fn_definition(*this);
-}
+    ASTFunctionDefinition(const Token          & fn_name,
+                          std::vector<Argument>args,
+                          std::shared_ptr<IAST>return_type,
+                          std::shared_ptr<IAST>body,
+                          PositionRange        position) :
+        fn_name(fn_name),
+        args(args),
+        return_type(return_type),
+        body(body),
+        IAST(ASTType::FunctionDefinition, position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    for (auto arg : args) {
-        arg.first->map(visitor);
-        arg.second->map(visitor);
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_fn_definition(*this);
     }
-    this->body->map(visitor);
 
-    this->return_type->map(visitor);
-}
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        for (auto arg : args) {
+            arg.first->dispatch(visitor);
+            arg.second->dispatch(visitor);
+        }
+        this->body->dispatch(visitor);
+
+        this->return_type->dispatch(visitor);
+    }
 };
 
 
 class ASTFunctionCall : public IAST {
 public:
 
-std::shared_ptr<IAST>               name;
-std::vector<std::shared_ptr<IAST> > params;
+    std::shared_ptr<IAST>name;
+    std::vector<std::shared_ptr<IAST> >params;
 
 
-ASTFunctionCall(std::shared_ptr<IAST> name, std::vector<std::shared_ptr<IAST> > params, PositionRange position) :
-    name(name), params(params), IAST(ASTType::FunctionCall, position){
-}
-virtual void map(IASTVisitor& visitor){
-    visitor.map_fn_call(*this);
-}
+    ASTFunctionCall(std::shared_ptr<IAST>              name,
+                    std::vector<std::shared_ptr<IAST> >params,
+                    PositionRange                      position) :
+        name(name), params(params), IAST(ASTType::FunctionCall, position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    this->name->map(visitor);
-
-    for (auto param: params) {
-        param->map(visitor);
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_fn_call(*this);
     }
-}
+
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        this->name->dispatch(visitor);
+
+        for (auto param: params) {
+            param->dispatch(visitor);
+        }
+    }
 };
 
 class ASTVariableDefinition : public IAST {
 public:
-std::shared_ptr<IAST> name;
-std::shared_ptr<IAST> type;
-std::shared_ptr<IAST> rhs_value;
 
-ASTVariableDefinition(std::shared_ptr<IAST> name, std::shared_ptr<IAST> type, std::shared_ptr<IAST> rhs_value, PositionRange position) :
-    name(name), type(type), rhs_value(rhs_value), IAST(ASTType::VariableDefinition, position){
-}
+    std::shared_ptr<IAST>name;
+    std::shared_ptr<IAST>type;
+    std::shared_ptr<IAST>rhs_value;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_variable_definition(*this);
-}
+    ASTVariableDefinition(std::shared_ptr<IAST>name,
+                          std::shared_ptr<IAST>type,
+                          std::shared_ptr<IAST>rhs_value,
+                          PositionRange        position) :
+        name(name), type(type), rhs_value(rhs_value), IAST(
+            ASTType::VariableDefinition,
+            position) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    assert(this->name);
-    this->name->map(visitor);
-
-    if (this->type) {
-        this->type->map(visitor);
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_variable_definition(*this);
     }
 
-    if (this->rhs_value) {
-        this->rhs_value->map(visitor);
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        assert(this->name);
+        this->name->dispatch(visitor);
+
+        if (this->type) {
+            this->type->dispatch(visitor);
+        }
+
+        if (this->rhs_value) {
+            this->rhs_value->dispatch(visitor);
+        }
     }
-}
 };
 
 class ASTRoot : public IAST {
 public:
-std::vector<std::shared_ptr<IAST> > children;
 
-ASTRoot(std::vector<std::shared_ptr<IAST> > children, PositionRange position) :
-    IAST(ASTType::Root, position), children(children){
-}
+    std::vector<std::shared_ptr<IAST> >children;
 
-virtual void map(IASTVisitor& visitor){
-    visitor.map_root(*this);
-}
+    ASTRoot(std::vector<std::shared_ptr<IAST> >children,
+            PositionRange                      position) :
+        IAST(ASTType::Root, position), children(children) {}
 
-virtual void traverse_inner(IASTVisitor& visitor){
-    for (auto child : this->children) {
-        child->map(visitor);
+    virtual void dispatch(IASTVisitor& visitor) {
+        visitor.inspect_root(*this);
     }
-}
+
+    virtual void traverse_inner(IASTVisitor& visitor) {
+        for (auto child : this->children) {
+            child->dispatch(visitor);
+        }
+    }
 };
 
-std::shared_ptr<IAST> parse(std::vector<Token>& tokens, std::string& file_data);
+std::shared_ptr<IAST>parse(std::vector<Token>& tokens,
+                           std::string       & file_data);

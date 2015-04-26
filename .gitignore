@@ -2,4 +2,4 @@
 *.pyc
 bin/achilles
 build/*.o
-
+core

@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"get_value",
+				"get_value_for_func_call"
+			],
+			[
+				"LL",
+				"LLVM_LINKS"
+			],
+			[
 				"cre",
 				"credentials"
 			],
@@ -506,48 +514,80 @@
 			[
 				"tree_",
 				"tree_years"
-			],
-			[
-				"res",
-				"response_page	statement"
-			],
-			[
-				"passwoir",
-				"password_file_path"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "/home/bollu/.config/fish/config.fish",
+			"file": "makefile",
 			"settings":
 			{
-				"buffer_size": 1905,
+				"buffer_size": 1327,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/bollu/dotfiles/scripts/auto-net-reload.py",
+			"file": "src/ast.h",
 			"settings":
 			{
-				"buffer_size": 4823,
+				"buffer_size": 8370,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/bollu/prog/competitions/cisco/secure-password-system.cpp",
+			"file": "src/tokenizer.h",
 			"settings":
 			{
-				"buffer_size": 1252,
+				"buffer_size": 2133,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/home/bollu/prog/competitions/cisco/big-file-system-search.cpp",
+			"file": "src/tokenizer.cpp",
 			"settings":
 			{
-				"buffer_size": 4095,
+				"buffer_size": 8715,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/bollu/prog/pixeldruid/_harp/public/math/vector_calc.md",
+			"settings":
+			{
+				"buffer_size": 5953,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/type_system.h",
+			"settings":
+			{
+				"buffer_size": 6148,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/type_system.cpp",
+			"settings":
+			{
+				"buffer_size": 7636,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "src/llvm_codegen.h",
+			"settings":
+			{
+				"buffer_size": 4789,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "bin/examples/hello.acl",
+			"settings":
+			{
+				"buffer_size": 9,
 				"line_ending": "Unix"
 			}
 		}
@@ -559,21 +599,25 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 217.0,
-		"last_filter": "to spac",
+		"height": 249.0,
+		"last_filter": "isnta",
 		"selected_items":
 		[
 			[
-				"to spac",
-				"Indentation: Convert to Spaces"
+				"isnta",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
 			],
 			[
 				"insta",
 				"Package Control: Install Package"
 			],
 			[
-				"isnta",
-				"Package Control: Install Package"
+				"to spac",
+				"Indentation: Convert to Spaces"
 			],
 			[
 				"lisp",
@@ -670,10 +714,6 @@
 			[
 				"sideb",
 				"View: Toggle Side Bar"
-			],
-			[
-				"remo",
-				"Package Control: Remove Package"
 			],
 			[
 				"c++",
@@ -1076,7 +1116,7 @@
 				"Set Syntax: JavaScript"
 			]
 		],
-		"width": 507.0
+		"width": 529.0
 	},
 	"console":
 	{
@@ -1103,31 +1143,42 @@
 	],
 	"file_history":
 	[
+		"/home/bollu/prog/cpp-achilles/src/pretty_print.h",
+		"/home/bollu/prog/cpp-achilles/src/ast.cpp",
+		"/home/bollu/prog/cpp-achilles/src/ast.h",
+		"/home/bollu/prog/cpp-achilles/src/llvm_codegen.h",
+		"/home/bollu/prog/cpp-achilles/.gitignore",
+		"/home/bollu/prog/cpp-achilles/src/type_system.h",
+		"/home/bollu/prog/cpp-achilles/src/type_system.cpp",
+		"/home/bollu/.emacs.d/init.el",
+		"/home/bollu/prog/cpp-achilles/src/main.cpp",
+		"/home/bollu/.emacs.d/personal/custom.el",
+		"/home/bollu/.emacs.d/custom.el",
+		"/home/bollu/.emacs",
+		"/home/bollu/.config/sublime-text-3/Packages/BracketGuard/Default (Linux).sublime-keymap",
+		"/home/bollu/prog/cpp-achilles/src/c_codegen.h",
+		"/home/bollu/prog/cpp-achilles/uncrustify/neovim.cfg",
+		"/home/bollu/prog/cpp-achilles/uncrustify/ben2.cfg",
+		"/home/bollu/prog/cpp-achilles/makefile",
+		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
+		"/home/bollu/prog/competitions/cisco/secure-password-system.cpp",
+		"/home/bollu/prog/competitions/cisco/big-file-system-search.cpp",
+		"/home/bollu/.config/fish/config.fish",
 		"/home/bollu/prog/competitions/cisco/.gitignore",
 		"/home/bollu/tmp/sufi-proofread.txt",
 		"/home/bollu/.config/sublime-text-3/Packages/User/Fountainhead.sublime-settings",
 		"/home/bollu/reading/head-space/latern-slides.fountain",
-		"/home/bollu/dotfiles/scripts/auto-net-reload.py",
 		"/home/bollu/.config/sublime-text-3/Packages/Fountainhead/Fountainhead.sublime-settings",
 		"/home/bollu/.config/sublime-text-3/Packages/User/FilesystemAutocompletion.sublime-settings",
 		"/home/bollu/.fonts.conf",
-		"/home/bollu/.emacs",
 		"/home/bollu/prog/cpp-achilles/src/ls",
-		"/home/bollu/prog/cpp-achilles/makefile",
 		"/home/bollu/.config/sublime-text-3/Packages/User/Distraction Free.sublime-settings",
-		"/home/bollu/prog/cpp-achilles/src/ast.h",
-		"/home/bollu/prog/cpp-achilles/src/ast.cpp",
-		"/home/bollu/prog/cpp-achilles/src/main.cpp",
 		"/home/bollu/tmp/clang-fuckaround-can-delete/main.cpp",
-		"/home/bollu/prog/cpp-achilles/src/type_system.h",
 		"/home/bollu/prog/cpp-achilles/src/tokenizer.h",
 		"/home/bollu/prog/cpp-achilles/src/tokenizer.cpp",
 		"/home/bollu/prog/cpp-achilles/bin/examples/hello.acl",
 		"/home/bollu/.vimrc",
-		"/home/bollu/prog/cpp-achilles/src/type_system.cpp",
 		"/home/bollu/tmp/clang-fuckaround-can-delete/msin",
-		"/home/bollu/prog/cpp-achilles/.gitignore",
-		"/home/bollu/prog/cpp-achilles/src/pretty_print.h",
 		"/home/bollu/prog/cpp-achilles/.ycm_extra_conf.py",
 		"/home/bollu/.config/sublime-text-3/Packages/User/Default (Linux).sublime-keymap",
 		"/home/bollu/.config/sublime-text-3/Packages/User/C++YouCompleteMe.sublime-settings",
@@ -1142,7 +1193,6 @@
 		"/home/bollu/prog/gsoc-vispy/vispy/vispy/app/backends/_ipynb_static.py",
 		"/home/bollu/prog/random-snippets/haskell-types/state.hs",
 		"/home/bollu/scripts/auto-net-reload.py",
-		"/home/bollu/.config/fish/config.fish",
 		"/home/bollu/.config/sublime-text-3/Packages/Default/Default (Linux).sublime-keymap",
 		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/gloo/unstructured_2d.py",
 		"/home/bollu/prog/gsoc-vispy/vispy/examples/basics/visuals/line_plot.py",
@@ -1220,21 +1270,11 @@
 		"/home/bollu/prog/gsoc-vispy/vispy/make/__main__.py",
 		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/__init__.py",
 		"/home/bollu/prog/gsoc-vispy/vispy/vispy/geometry/rect.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/make/install_python.ps1",
-		"/home/bollu/prog/gsoc-vispy/vispy/make/__init__.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/io/tests/test_io.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/tests/test_testing.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/vispy/testing/tests/__init__.py",
-		"/home/bollu/prog/gsoc-vispy/vispy/doc/make.bat",
-		"/home/bollu/.config/sublime-text-3/Packages/User/Preferences.sublime-settings",
-		"/home/bollu/prog/gsoc-vispy/vispy/Makefile",
-		"/home/bollu/tmp/make/make.py",
-		"/home/bollu/tmp/make/__main__",
-		"/home/bollu/prog/gsoc-vispy/vispy/examples/demo/galaxy/galaxy_specrend.py"
+		"/home/bollu/prog/gsoc-vispy/vispy/make/install_python.ps1"
 	],
 	"find":
 	{
-		"height": 28.0
+		"height": 40.0
 	},
 	"find_in_files":
 	{
@@ -1267,6 +1307,45 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"span",
+			"pre",
+			"For",
+			"Fot",
+			"For",
+			"undefined function",
+			"unknown ast type",
+			"add_variable",
+			"sin_type",
+			"struct TSType",
+			"TSType",
+			"sin_type",
+			"sin_typr",
+			"TSVariable",
+			"TSFunctionTypeData",
+			"int_type",
+			"int_typr",
+			"TSFunctionTypeData",
+			"sin",
+			"IntType",
+			"sin",
+			"root_Scope",
+			"<<",
+			"CLANG_LINK",
+			"inspect",
+			"inspect(IASTVisitor& visitor)",
+			"(IASTVisitor& visitor)",
+			"inspect",
+			"virtual void traverse_inner(IASTVisitor& visitor)",
+			"virtual void inspect(IASTVisitor& visitor)",
+			"IASTVisitor& visitor",
+			"inspect",
+			"inspect_ast",
+			"root",
+			"traverse_inner",
+			") {",
+			");",
+			"<<",
+			"class",
 			"PREV_USED_CREDENTIALS",
 			"cppclang",
 			"AFTER_LOGIN_SLEEP_TIME",
@@ -1355,46 +1434,7 @@
 			"BaseAST",
 			"class ASTPrefixExpr : public BaseAST {\n",
 			"PrefixExprAST",
-			"class PrefixExprAST : public BaseAST {\n",
-			"LiteralAST",
-			"ParserIInfix",
-			"ParserIPrefix",
-			"ParserBasePrefix",
-			"BaseInfixParser",
-			"BasePrefixParser",
-			"LiteralAST",
-			"parser",
-			"add",
-			"__stringify",
-			"std::cout",
-			"}\n",
-			"std::cout",
-			"__stringify",
-			"stringify",
-			"constructed AST",
-			"parse",
-			"__stringify",
-			"__stri",
-			"stringify",
-			"__stringify",
-			"DEBUG_PRINT_POSITION",
-			"TokenType",
-			"LinePlotVisual",
-			"class LinePlotVisual",
-			"LinePlotVisual",
-			"(default",
-			"normalize",
-			"normalizw",
-			"_texture",
-			"class Colormap",
-			"class ImageVisual",
-			"get_colormap",
-			"class Colormap",
-			"class ImageVisual",
-			"vec2 posit",
-			"def set",
-			"set",
-			"class LinePlotVisual"
+			"class PrefixExprAST : public BaseAST {\n"
 		],
 		"highlight": false,
 		"in_selection": false,
@@ -1402,6 +1442,8 @@
 		"regex": false,
 		"replace_history":
 		[
+			"virtual void traverse_inner(IASTVisitor& visitor, void *data)",
+			"virtual void inspect(IASTVisitor& visitor, void *data)",
 			"shift",
 			"new_symbol",
 			"DATUM_TYPE_SYMBOL",
@@ -1431,111 +1473,53 @@
 	"groups":
 	[
 		{
-			"selected": 3,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "/home/bollu/.config/fish/config.fish",
+					"file": "makefile",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1905,
+						"buffer_size": 1327,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1140,
-								1140
+								796,
+								796
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"incomplete_sync": null,
+							"syntax": "Packages/Makefile/Makefile.tmLanguage"
 						},
 						"translation.x": 0.0,
-						"translation.y": 595.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "/home/bollu/dotfiles/scripts/auto-net-reload.py",
+					"file": "src/ast.h",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4823,
+						"buffer_size": 8370,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4236,
-								4236
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 2531.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/home/bollu/prog/competitions/cisco/secure-password-system.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 1252,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								1248,
-								1248
-							]
-						],
-						"settings":
-						{
-							"incomplete_sync": null,
-							"syntax": "Packages/C++/C++.tmLanguage"
-						},
-						"translation.x": -0.0,
-						"translation.y": 951.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "/home/bollu/prog/competitions/cisco/big-file-system-search.cpp",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 4095,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								4095,
-								4095
+								0,
+								0
 							]
 						],
 						"settings":
@@ -1547,11 +1531,238 @@
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": -0.0,
-						"translation.y": 2511.0,
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "src/tokenizer.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2133,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								573,
+								573
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 343.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "src/tokenizer.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8715,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1874,
+								1874
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1623.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/home/bollu/prog/pixeldruid/_harp/public/math/vector_calc.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5953,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5951,
+								5951
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Markdown/Markdown.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 3043.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "src/type_system.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 6148,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4582,
+								4582
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3071.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "src/type_system.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7636,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								395,
+								395
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "src/llvm_codegen.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4789,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								364,
+								364
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "bin/examples/hello.acl",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3,
+								3
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
 					"type": "text"
 				}
 			]
@@ -1648,7 +1859,7 @@
 	"project": "cpp-achilles.sublime-project",
 	"replace":
 	{
-		"height": 52.0
+		"height": 76.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -1657,6 +1868,74 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"tokeniz",
+				"src/tokenizer.cpp"
+			],
+			[
+				"tokn",
+				"src/tokenizer.h"
+			],
+			[
+				"ast",
+				"src/ast.h"
+			],
+			[
+				"code",
+				"src/llvm_codegen.h"
+			],
+			[
+				"type",
+				"src/type_system.cpp"
+			],
+			[
+				"type_",
+				"src/type_system.h"
+			],
+			[
+				"pre",
+				"src/pretty_print.h"
+			],
+			[
+				"hello",
+				"bin/examples/hello.acl"
+			],
+			[
+				"ast.h",
+				"src/ast.h"
+			],
+			[
+				"pr",
+				"src/pretty_print.h"
+			],
+			[
+				"ast.c",
+				"src/ast.cpp"
+			],
+			[
+				"a",
+				"src/ast.h"
+			],
+			[
+				"main",
+				"src/main.cpp"
+			],
+			[
+				"neo",
+				"uncrustify/neovim.cfg"
+			],
+			[
+				"make",
+				"makefile"
+			],
+			[
+				"ben2",
+				"uncrustify/ben2.cfg"
+			],
+			[
+				"as",
+				"src/ast.cpp"
+			],
 			[
 				"tye",
 				"src/type_system.h"
@@ -1670,24 +1949,8 @@
 				"src/ast.cpp"
 			],
 			[
-				"ast",
-				"src/ast.h"
-			],
-			[
 				"token",
 				"src/tokenizer.h"
-			],
-			[
-				"ast.c",
-				"src/ast.cpp"
-			],
-			[
-				"main",
-				"src/main.cpp"
-			],
-			[
-				"type",
-				"src/type_system.h"
 			],
 			[
 				"tokenizer.cpp",
@@ -1702,16 +1965,8 @@
 				"src/tokenizer.h"
 			],
 			[
-				"tokeniz",
-				"src/tokenizer.h"
-			],
-			[
 				"tokeni",
 				"src/tokenizer.cpp"
-			],
-			[
-				"ast.h",
-				"src/ast.h"
 			],
 			[
 				"",
@@ -1720,18 +1975,6 @@
 			[
 				".ycm",
 				".ycm_extra_conf.py"
-			],
-			[
-				"pre",
-				"src/pretty_print.h"
-			],
-			[
-				"make",
-				"makefile"
-			],
-			[
-				"pr",
-				"pretty_print.h"
 			],
 			[
 				"test_",
@@ -1934,10 +2177,6 @@
 				"src/ast.rs"
 			],
 			[
-				"type_",
-				"src/type_checker.rs"
-			],
-			[
 				"type_wa",
 				"src/type_walkers.rs"
 			],
@@ -1958,10 +2197,6 @@
 				"src/main.rs"
 			],
 			[
-				"hello",
-				"examples/hello_world.cpp"
-			],
-			[
 				".cpp",
 				"examples/hello_world.cpp"
 			],
@@ -1980,10 +2215,6 @@
 			[
 				"ca",
 				"Cargo.toml"
-			],
-			[
-				"as",
-				"src/ast.rs"
 			],
 			[
 				".caba",
@@ -2148,26 +2379,6 @@
 			[
 				"clien",
 				"website-portal/client.jsp"
-			],
-			[
-				"cliefra",
-				"website-portal/client-logout-frame-inside.html"
-			],
-			[
-				"fra",
-				"website-portal/client-logout-frame-inside.html"
-			],
-			[
-				"clien-",
-				"website-portal/client-logout.html"
-			],
-			[
-				"upl",
-				"client/upload-song-fragment.html"
-			],
-			[
-				"fragmen",
-				"client/play-song-fragment.html"
 			]
 		],
 		"width": 0.0
@@ -2175,9 +2386,13 @@
 	"select_project":
 	{
 		"height": 500.0,
-		"last_filter": "",
+		"last_filter": "pixel",
 		"selected_items":
 		[
+			[
+				"pixel",
+				"~/subl-projects/pixeldruid.sublime-project"
+			],
 			[
 				"rac",
 				"~/prog/rust-achilles/rust-achilles.sublime-project"
@@ -2225,7 +2440,7 @@
 	"show_minimap": false,
 	"show_open_files": true,
 	"show_tabs": true,
-	"side_bar_visible": false,
+	"side_bar_visible": true,
 	"side_bar_width": 262.0,
 	"status_bar_visible": true,
 	"template_settings":

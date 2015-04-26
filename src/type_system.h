@@ -12,180 +12,203 @@ struct TSContext;
 struct TSASTData;
 struct TSFunctionTypeData;
 
+
 struct TSType
 {
 public:
+
     enum class Variant
     {
         Void,
         String,
-        Int,         //abstract int to be unified
-        Float,       //abstract float to be unified
+        Int,     // abstract int to be unified
+        Float,   // abstract float to be unified
+        Float32, // abstract float to be unified
         Int32,
         Function,
-    }
-                                        variant;
+    } variant;
 
-    std::shared_ptr<TSFunctionTypeData> func_data;
-    TSType(const TSFunctionTypeData& func_data);
+    std::shared_ptr<TSFunctionTypeData>func_data;
+    PositionRange *decl_pos;
 
-private:
-    friend class TSContext;
-    TSType(Variant variant) : variant(variant){
-    }
+    TSType(Variant variant, PositionRange *decl_pos) : variant(variant) {}
+
+    TSType(const TSFunctionTypeData func_data,
+           PositionRange            *decl_pos);
 };
+static const TSType *int_type = new TSType(TSType::Variant::Int, nullptr);
+static const TSType *float_type = new TSType(TSType::Variant::Float, nullptr);
+static const TSType *string_type = new TSType(TSType::Variant::String, nullptr);
+static const TSType *void_type = new TSType(TSType::Variant::Void, nullptr);
 
-std::ostream& operator <<(std::ostream& out, const TSType& type);
+static const TSType *i32_type = new TSType(TSType::Variant::Int32, nullptr);
+static const TSType *f32_type = new TSType(TSType::Variant::Float32, nullptr);
+
+std::ostream& operator<<(std::ostream& out,
+                         const TSType& type);
 
 struct TSFunctionTypeData
 {
-    TSType              return_type;
-    std::vector<TSType> args;
+    const TSType *return_type;
+    std::vector<const TSType *>args;
 
-    TSFunctionTypeData(std::vector<TSType> args, TSType return_type) :
-        args(args), return_type(return_type){
-    }
+    TSFunctionTypeData(std::vector<const TSType *>args,
+                       const TSType               *return_type) :
+        args(args), return_type(return_type) {}
 };
 
+struct TSVariable {
+    std::string name;
+    const TSType *type;
+
+    PositionRange *decl_pos;
+
+    TSVariable(std::string name, const TSType *type,
+               PositionRange *decl_pos) : name(
+            name), type(type), decl_pos(decl_pos) {}
+};
 
 struct TSScope
 {
 public:
-    TSType& get_type(const std::string& name){
+
+    const TSType* get_type(const std::string& name) {
         auto it = this->typename_to_type.find(name);
 
         if (it != this->typename_to_type.end()) {
-            return *it->second.get();
-        }else {
+            return it->second;
+        } else {
             if (this->parent != nullptr) {
                 return this->parent->get_type(name);
-            }else {
-                assert(false && "do not have type");
+            } else {
+                assert(false
+                       && "do not have type");
             }
         }
     }
 
-    TSType& get_variable(const std::string& name){
+    const TSVariable* get_variable(const std::string& name) {
         auto it = this->varname_to_var.find(name);
 
         if (it != this->varname_to_var.end()) {
             return it->second;
-        }else {
+        } else {
             if (this->parent != nullptr) {
                 return this->parent->get_variable(name);
-            }else {
-                assert(false && "do not have variable");
+            } else {
+                assert(false
+                       && "do not have variable");
             }
         }
     }
 
-    PositionRange get_decl(const std::string& name){
-        auto it = this->name_to_decl.find(name);
-
-        if (it != this->name_to_decl.end()) {
-            return it->second;
-        }else {
-            if (this->parent != nullptr) {
-                return this->parent->get_decl(name);
-            }else {
-                assert(false && "do not have declaration");
-            }
-        }
-    }
-
-    bool has_type(const std::string& name){
+    bool has_type(const std::string& name) {
         auto it = this->typename_to_type.find(name);
 
         if (it == this->typename_to_type.end()) {
             if (this->parent == nullptr) {
                 return false;
-            }else {
+            } else {
                 return this->parent->has_type(name);
             }
-        }else {
+        } else {
             return true;
         }
     }
 
-    bool has_variable(const std::string& name){
+    bool has_variable(const std::string& name) {
         auto it = this->varname_to_var.find(name);
 
         if (it == this->varname_to_var.end()) {
             if (this->parent == nullptr) {
                 return false;
-            }else {
+            } else {
                 return this->parent->has_variable(name);
             }
-        }else {
+        } else {
             return true;
         }
     }
 
-    void add_variable(const std::string& name, TSType& type){
+    void add_variable(const std::string& name, TSVariable *type) {
         assert(!this->has_variable(name));
-        this->varname_to_var.insert(std::pair<std::string, TSType&>(name, type));
-        //this->varname_to_var[name] = type;
+        this->varname_to_var.insert(std::make_pair(name, type));
+
+        // this->varname_to_var[name] = type;
     }
 
-    void add_type(const std::string& name, std::unique_ptr<TSType> decl){
+    void add_type(const std::string& name, const TSType *type) {
         assert(!this->has_type(name));
-        this->typename_to_type[name] = std::move(decl);
-    }
-
-    void add_decl(const std::string& name, const PositionRange& position){
-        assert(!this->has_decl(name));
-        this->name_to_decl.insert(std::pair<std::string, PositionRange>(name, position));
+        this->typename_to_type[name] = type;
     }
 
 private:
+
     TSScope *parent;
-    TSScope(TSScope *parent) : parent(parent){
-    }
+    TSScope(TSScope *parent) : parent(parent) {}
 
-    std::map<std::string, std::unique_ptr<TSType> > typename_to_type;
-    std::map<std::string, TSType&>                  varname_to_var;
+    std::map<std::string, const TSType *>typename_to_type;
+    std::map<std::string, const TSVariable *>varname_to_var;
 
-    std::map<std::string, PositionRange>            name_to_decl;
 
     friend class TSContext;
-
-    bool has_decl(const std::string& name){
-        if (this->name_to_decl.find(name) != this->name_to_decl.end()) {
-            return true;
-        }else {
-            if (this->parent != nullptr) {
-                return this->parent->has_decl(name);
-            }else {
-                return false;
-            }
-        }
-    }
 };
 
 struct TSContext
 {
 private:
-    //we need to store a vector of pointers since references to a frikkin
-    //STL vector may get invalidated.
-    std::vector<std::shared_ptr<TSScope> > scopes;
+
+    // we need to store a vector of pointers since references to a frikkin
+    // STL vector may get invalidated.
+    std::vector<std::shared_ptr<TSScope> >scopes;
+
 public:
-    TSContext(){
+
+    TSContext() {
         auto root_scope = std::shared_ptr<TSScope>(new TSScope(nullptr));
 
-        root_scope->add_type("i32", std::unique_ptr<TSType>(new TSType(TSType(TSType::Variant::Int32))));
-        root_scope->add_type("int", std::unique_ptr<TSType>(new TSType(TSType(TSType::Variant::Int))));
-        root_scope->add_type("float", std::unique_ptr<TSType>(new TSType(TSType(TSType::Variant::Float))));
-        root_scope->add_type("void", std::unique_ptr<TSType>(new TSType(TSType(TSType::Variant::Void))));
-        root_scope->add_type("string", std::unique_ptr<TSType>(new TSType(TSType(TSType::Variant::String))));
+
+        TSType *sin_type =
+            new TSType(TSFunctionTypeData({ float_type }, float_type),
+                       nullptr);
+
+        root_scope->add_variable("sin",
+                                 new TSVariable("sin", sin_type, nullptr));
+        root_scope->add_type("i32",  i32_type);
+        root_scope->add_type("f32",  i32_type);
+        root_scope->add_type("void", void_type);
+
+        /*
+           root_scope->add_type("i32",
+                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
+                                                                       Variant::
+                                                                       Int32))));
+           root_scope->add_type("int",
+                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
+                                                                       Variant::
+                                                                       Int))));
+           root_scope->add_type("float",
+                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
+                                                                       Variant::
+                                                                       Float))));
+           root_scope->add_type("void",
+                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
+                                                                       Variant::
+                                                                       Void))));
+           root_scope->add_type("string",
+                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
+                                                                       Variant::
+                                                                       String))));
+         */
 
         scopes.push_back(root_scope);
     }
 
-    TSScope *get_root_scope(){
+    TSScope* get_root_scope() {
         return this->scopes.at(0).get();
     }
 
-    TSScope *create_child_scope(TSScope *parent){
+    TSScope* create_child_scope(TSScope *parent) {
         scopes.push_back(std::shared_ptr<TSScope>(new TSScope(parent)));
         return this->scopes[this->scopes.size() - 1].get();
     }
@@ -194,10 +217,9 @@ public:
 struct TSASTData
 {
     TSScope *scope;
-    TSType  *type;
+    const TSType  *type;
 
-    TSASTData(TSScope *scope) : scope(scope), type(nullptr){
-    }
+    TSASTData(TSScope *scope) : scope(scope), type(nullptr) {}
 };
 
-TSContext type_system_type_check(std::shared_ptr<IAST> root);
+TSContext type_system_type_check(std::shared_ptr<IAST>root);

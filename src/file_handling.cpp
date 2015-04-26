@@ -4,7 +4,9 @@
 #include <algorithm>
 #include <sstream>
 
-std::pair<PositionIndex, PositionIndex> index_to_line_col(const PositionIndex& idx, std::string& file_data){
+std::pair<PositionIndex, PositionIndex>index_to_line_col(
+    const PositionIndex& idx,
+    std::string        & file_data) {
     PositionIndex line = 1;
     PositionIndex col  = 0;
 
@@ -18,7 +20,7 @@ std::pair<PositionIndex, PositionIndex> index_to_line_col(const PositionIndex& i
         if (ch == '\n') {
             line++;
             col = 0;
-        }else {
+        } else {
             col++;
         }
 
@@ -28,8 +30,7 @@ std::pair<PositionIndex, PositionIndex> index_to_line_col(const PositionIndex& i
     return std::make_pair(line, col);
 }
 
-
-PositionRange& PositionRange::operator =(const PositionRange& other){
+PositionRange& PositionRange::operator=(const PositionRange& other) {
     this->file_data = other.file_data;
     this->start     = other.start;
     this->end       = other.end;
@@ -37,14 +38,12 @@ PositionRange& PositionRange::operator =(const PositionRange& other){
     return *this;
 }
 
-
-PositionRange PositionRange::extend_end(PositionRange extended){
+PositionRange PositionRange::extend_end(PositionRange extended) {
     assert(this->end <= extended.start);
     return PositionRange(this->start, extended.end, this->file_data);
 }
 
-
-std::string get_line(std::string& file_data, int line_number){
+std::string get_line(std::string& file_data, int line_number) {
     int begin_index         = 0;
     int current_line_number = 1;
 
@@ -66,14 +65,14 @@ std::string get_line(std::string& file_data, int line_number){
         end_index++;
     }
 
-    //tabs will screw pretty printing up (since tab with is unknown)
-    std::string raw_str = file_data.substr(begin_index, end_index - begin_index);
+    // tabs will screw pretty printing up (since tab with is unknown)
+    std::string raw_str =
+        file_data.substr(begin_index, end_index - begin_index);
     std::replace(raw_str.begin(), raw_str.end(), '\t', ' ');
     return raw_str;
 }
 
-
-std::ostream& operator<<(std::ostream& out, const PositionRange& range){
+std::ostream& operator<<(std::ostream& out, const PositionRange& range) {
     auto start_line_col = index_to_line_col(range.start, range.file_data);
     auto end_line_col   = index_to_line_col(range.end + 1, range.file_data);
 
@@ -83,7 +82,10 @@ std::ostream& operator<<(std::ostream& out, const PositionRange& range){
     out << "(" << end_line_col.first << ":" << end_line_col.second << ")";
 
     out << "\n";
-    //same line number, so print entire line and throw an underline at the right position
+
+    // same line number, so print entire line and throw an underline at the
+    // right
+    // position
     if (start_line_col.first == end_line_col.first) {
         out << get_line(range.file_data, start_line_col.first) << "\n";
 
@@ -99,11 +101,21 @@ std::ostream& operator<<(std::ostream& out, const PositionRange& range){
         for (; current_col < end_line_col.second; current_col++) {
             out << "~";
         }
-    }else {
-        out << "\n";
-        out << range.file_data.substr(range.start, range.end - range.start);
-    }
+    } else {
+        int line_begin_index = range.start - 1;
 
+        for (int i = line_begin_index; i <= range.end; ++i) {
+            if (range.file_data[i] == '\n') {
+                current_line_number++;
+                out << "\n" << current_line_number << ":";
+            } else {
+                out << range.file_data[i];
+            }
+        }
+
+        // out << "\n";
+        // out << range.file_data.substr(range.start, range.end - range.start);
+    }
 
 
     return out;
