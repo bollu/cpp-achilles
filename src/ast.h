@@ -251,13 +251,11 @@ public:
 
     std::shared_ptr<IAST>name;
     std::shared_ptr<IAST>type;
-    std::shared_ptr<IAST>rhs_value;
 
     ASTVariableDefinition(std::shared_ptr<IAST>name,
                           std::shared_ptr<IAST>type,
-                          std::shared_ptr<IAST>rhs_value,
                           PositionRange        position) :
-        name(name), type(type), rhs_value(rhs_value), IAST(
+        name(name), type(type), IAST(
             ASTType::VariableDefinition,
             position) {}
 
@@ -271,10 +269,6 @@ public:
 
         if (this->type) {
             this->type->dispatch(visitor);
-        }
-
-        if (this->rhs_value) {
-            this->rhs_value->dispatch(visitor);
         }
     }
 };

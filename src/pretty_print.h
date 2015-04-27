@@ -133,11 +133,6 @@ void ASTPrettyPrinter::inspect_variable_definition(ASTVariableDefinition& defn)
         out << " : ";
         defn.type->dispatch(*this);
     }
-
-    if (defn.rhs_value) {
-        out << " = ";
-        defn.rhs_value->dispatch(*this);
-    }
 }
 
 void ASTPrettyPrinter::inspect_fn_call(ASTFunctionCall& fn_call) {

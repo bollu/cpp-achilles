@@ -19,6 +19,8 @@ struct PositionRange
 
     PositionRange extend_end(PositionRange extended);
     PositionRange& operator=(const PositionRange& other);
+
+    bool operator==(const PositionRange& other);
 };
 
 std::ostream& operator<<(std::ostream       & out,

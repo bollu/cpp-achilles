@@ -10,6 +10,9 @@ enum class Precedence
     Lowest = 0,
     Statement,
 
+    // assignment
+    Assignment,
+
     // conditionals
     ConditionalTerm,
     ConditionalFactor,
@@ -336,22 +339,11 @@ class VariableDefinitionPrefix : public IParserPrefix {
 
         type = parser.parse(Precedence::Highest);
 
-        // }
-
-        std::shared_ptr<IAST>rhs_value = nullptr;
-
-        if (parser.cursor.get().type == TokenType::Equals) {
-            parser.cursor.expect(TokenType::Equals);
-            rhs_value = parser.parse(Precedence::Highest);
-        }
-
-
         position = position.extend_end(parser.cursor.get_current_range());
 
         return std::shared_ptr<ASTVariableDefinition>(new ASTVariableDefinition(
                                                           name,
                                                           type,
-                                                          rhs_value,
                                                           position));
     }
 };
@@ -477,6 +469,7 @@ std::shared_ptr<IAST>parse(std::vector<Token>& tokens, std::string& file_data) {
     p.add_infix_parser(new OperatorParserInfix(TokenType::CondNEQ,
                                                Precedence::ConditionalFactor));
 
+
     // function call
     p.add_infix_parser(new FunctionCallParserInfix);
 
@@ -496,6 +489,10 @@ std::shared_ptr<IAST>parse(std::vector<Token>& tokens, std::string& file_data) {
                                                Precedence::MathProduct));
     p.add_infix_parser(new OperatorParserInfix(TokenType::Divide,
                                                Precedence::MathProduct));
+
+    // assignment
+    p.add_infix_parser(new OperatorParserInfix(TokenType::Equals,
+                                               Precedence::Assignment));
 
     // statement (postfix)
     p.add_infix_parser(new StatementParserPostfix);

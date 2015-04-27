@@ -74,7 +74,7 @@ std::string get_line(std::string& file_data, int line_number) {
 
 std::ostream& operator<<(std::ostream& out, const PositionRange& range) {
     auto start_line_col = index_to_line_col(range.start, range.file_data);
-    auto end_line_col   = index_to_line_col(range.end + 1, range.file_data);
+    auto end_line_col   = index_to_line_col(range.end, range.file_data);
 
     out << "\nposition: ";
     out << "(" << start_line_col.first << ":" << start_line_col.second << ")";
@@ -82,6 +82,18 @@ std::ostream& operator<<(std::ostream& out, const PositionRange& range) {
     out << "(" << end_line_col.first << ":" << end_line_col.second << ")";
 
     out << "\n";
+
+    // if they're of the type (2:8 ) to (3:0) then make them both on the same
+    // line
+
+    /*
+       if (start_line_col.first + 1 == end_line_col.first && end_line_col.second
+          == 0) {
+        PositionRange new_end_range = range;
+        new_end_range.end -= 1;
+        end_line_col  = index_to_line_col(new_end_range.end, range.file_data);
+       };
+     */
 
     // same line number, so print entire line and throw an underline at the
     // right
@@ -106,8 +118,7 @@ std::ostream& operator<<(std::ostream& out, const PositionRange& range) {
 
         for (int i = line_begin_index; i <= range.end; ++i) {
             if (range.file_data[i] == '\n') {
-                current_line_number++;
-                out << "\n" << current_line_number << ":";
+                out << range.file_data[i];
             } else {
                 out << range.file_data[i];
             }
@@ -119,4 +130,9 @@ std::ostream& operator<<(std::ostream& out, const PositionRange& range) {
 
 
     return out;
+}
+
+bool PositionRange::operator==(const PositionRange& other) {
+    return this->start == other.start
+           && this->end == other.end;
 }

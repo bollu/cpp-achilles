@@ -169,37 +169,16 @@ public:
 
 
         TSType *sin_type =
-            new TSType(TSFunctionTypeData({ float_type }, float_type),
+            new TSType(TSFunctionTypeData({ f32_type }, f32_type),
                        nullptr);
 
         root_scope->add_variable("sin",
                                  new TSVariable("sin", sin_type, nullptr));
         root_scope->add_type("i32",  i32_type);
-        root_scope->add_type("f32",  i32_type);
+        root_scope->add_type("f32",  f32_type);
         root_scope->add_type("void", void_type);
+        root_scope->add_type("string", string_type);
 
-        /*
-           root_scope->add_type("i32",
-                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
-                                                                       Variant::
-                                                                       Int32))));
-           root_scope->add_type("int",
-                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
-                                                                       Variant::
-                                                                       Int))));
-           root_scope->add_type("float",
-                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
-                                                                       Variant::
-                                                                       Float))));
-           root_scope->add_type("void",
-                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
-                                                                       Variant::
-                                                                       Void))));
-           root_scope->add_type("string",
-                             std::unique_ptr<TSType>(new TSType(TSType(TSType::
-                                                                       Variant::
-                                                                       String))));
-         */
 
         scopes.push_back(root_scope);
     }

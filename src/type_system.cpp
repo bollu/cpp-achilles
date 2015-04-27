@@ -189,14 +189,29 @@ void create_new_variable_for_variable_identifier(ASTLiteral  & var_name_ast,
                                                  const TSType& var_type) {
     assert(var_name_ast.token.type == TokenType::Identifier
            && " TokenType::Idenfitier required on ast->token.type");
+
     const std::string& name = *var_name_ast.token.value.ptr_s;
 
-    TSScope            *scope = var_name_ast.ts_data->scope;
+    TSScope *scope = var_name_ast.ts_data->scope;
 
     if (scope->has_variable(name)) {
+        const TSVariable *var = scope->get_variable(name);
+
+        assert(var->decl_pos);
+
+        // we're visiting the same declaration site again. chill out and don't
+        // create a new variable
+        // but this is _not_ an error since you're just *revisiting* the *same*
+        // decl
+        if (*var->decl_pos == var_name_ast.position) {
+            return;
+        }
+
         std::stringstream error;
         error << "\nredefinition of variable: " << name;
-        error << "\nfirst occurence: " << *scope->get_variable(name)->decl_pos;
+        error << "\nfirst occurence: " <<
+            *scope->get_variable(name)->decl_pos << " of type: " <<
+            *scope->get_variable(name)->type;
         error << "\nredefinition: " << var_name_ast.position;
 
         throw std::runtime_error(error.str());
@@ -234,34 +249,106 @@ const TSType* get_promoted_num_type(const TSType *t1, const TSType *t2) {
     return int_type;
 }
 
+/*
+   bool can_coerce_to(const TSType *t1, const TSType *t2) {
+    if (t1 == t2) {
+        return true;
+    }
+
+
+
+    return false;
+   }*/
+bool has_type_ancestor(const TSType *t1, const TSType *t2) {
+    if (t1 == t2) {
+        return true;
+    } else if (is_number(*t1)
+               && is_number(*t2)) {
+        return true;
+    }
+    return false;
+}
+
+// fugly
+#define can_coerce_to(x, y) has_type_ancestor((x), ((y)))
+
+const TSType* get_type_ancestor(const TSType *t1, const TSType *t2) {
+    assert(has_type_ancestor(t1, t2));
+
+    if (t1 == t2) {
+        return t1;
+    } else if (is_number(*t1)
+               && is_number(*t2)) {
+        return get_promoted_num_type(t1, t2);
+    }
+
+    assert(false
+           && "should not reach here");
+}
+
 class Typer : public IASTVisitor {
     virtual void inspect_variable_definition(
         ASTVariableDefinition& variable_defn) {
-        variable_defn.rhs_value->dispatch(*this);
         ASTLiteral& var_type_ast =
             dynamic_cast<ASTLiteral&>(*variable_defn.type);
 
         const TSType& type = get_type_for_type_literal(var_type_ast);
+
         var_type_ast.ts_data->type = &type;
 
         ASTLiteral& var_name_ast =
             dynamic_cast<ASTLiteral&>(*variable_defn.name);
+
+        // typer call on inspecting variable definition can occur multiple
+        // times. I need to compare definition position
         create_new_variable_for_variable_identifier(var_name_ast, type);
+        variable_defn.ts_data->type = &type;
     }
 
     virtual void inspect_fn_call(ASTFunctionCall& fn_call) {
         const TSType& type =
             *get_var_for_literal(dynamic_cast<ASTLiteral&>(*fn_call.name)).type;
 
-        fn_call.ts_data->type = &type;
+        fn_call.ts_data->type = type.func_data->return_type;
 
-        for (auto arg : fn_call.params) {
-            arg->dispatch(*this);
+        if (fn_call.params.size() != type.func_data->args.size()) {
+            std::stringstream error;
+            error << "function call: number of arguments mismatch.";
+            error << "expected number: " << fn_call.params.size();
+            error << "\n found:" << fn_call.params.size();
+            throw std::runtime_error(error.str());
         }
+
+        for (int i = 0; i < fn_call.params.size(); ++i) {
+            IAST *param_ast = fn_call.params[i].get();
+            param_ast->dispatch(*this);
+
+            const TSType *found_type = param_ast->ts_data->type;
+            const TSType *expected_type = type.func_data->args[i];
+
+            if (!can_coerce_to(found_type, expected_type)) {
+                std::stringstream error;
+                error << "type mismatch in function call";
+                error << " at parameter " << i + 1;
+                error << ". expected type: " << *expected_type <<
+                    ". found type: " << *found_type;
+                error << "\nat:" << param_ast->position;
+                error << "\nfunction call:" << fn_call.position;
+                throw std::runtime_error(error.str());
+            } else {
+                param_ast->ts_data->type = expected_type;
+            }
+        }
+
+        /*
+           for (auto arg : fn_call.params) {
+            arg->dispatch(*this);
+           }*/
     }
 
     virtual void inspect_statement(ASTStatement& statement) {
         statement.ts_data->type = void_type;
+        statement.inner->dispatch(*this);
     }
 
     virtual void inspect_literal(ASTLiteral& literal) {
@@ -305,22 +392,27 @@ class Typer : public IASTVisitor {
 
         TokenType type = expr.op.type;
 
+        // MATH ---------------------------------
         if ((type == TokenType::Plus)
             || (type == TokenType::Minus)
             || (type == TokenType::Multiply)
             || (type == TokenType::Divide)) {
             if (!is_number(**t1)) {
                 std::stringstream error;
-                error << "expected number type. Found: " << **t1;
-                error << expr.position;
+                error << "expected number type for operator " << type <<
+                    " on the left side argument. Found: " << **t1;
+                error << expr.left->position;
+                error << "\nIn expression: " << expr.position;
 
                 throw std::runtime_error(error.str());
             }
 
             if (!is_number(**t2)) {
                 std::stringstream error;
-                error << "expected number type. Found: " << **t2;
-                error << expr.position;
+                error << "expected number type for operator " << type <<
+                    " on the right. Found: " << **t2;
+                error << expr.right->position;
+                error << "\nIn expression: " << expr.position;
 
                 throw std::runtime_error(error.str());
             }
@@ -330,6 +422,36 @@ class Typer : public IASTVisitor {
             *t2 = promoted_type;
             expr.ts_data->type = promoted_type;
             return;
+        }
+
+        // ASSIGNMENT---------------------
+        if (expr.op.type == TokenType::Equals) {
+            expr.left->dispatch(*this);
+            expr.right->dispatch(*this);
+
+            const TSType *left_type = expr.left->ts_data->type;
+            const TSType *right_type = expr.right->ts_data->type;
+
+            if (!has_type_ancestor(left_type, right_type)) {
+                std::stringstream error;
+                error << "type mismatch. types have no common ancestor: " <<
+                    *left_type <<
+                    " and " << *right_type << ".";
+                error << "\n" << expr.left->position << " has type: " <<
+                    *left_type;
+                error << "\n" << expr.right->position << " has type: " <<
+                    *right_type;
+
+                throw std::runtime_error(error.str());
+            } else {
+                // only assignments have the ability to weaken types
+                const TSType *ancestor_type = get_type_ancestor(left_type,
+                                                                right_type);
+                expr.left->ts_data->type = ancestor_type;
+                expr.ts_data->type = ancestor_type;
+
+                return;
+            }
         }
 
         std::stringstream error;
