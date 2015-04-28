@@ -174,9 +174,9 @@ public:
 
         root_scope->add_variable("sin",
                                  new TSVariable("sin", sin_type, nullptr));
-        root_scope->add_type("i32",  i32_type);
-        root_scope->add_type("f32",  f32_type);
-        root_scope->add_type("void", void_type);
+        root_scope->add_type("i32",    i32_type);
+        root_scope->add_type("f32",    f32_type);
+        root_scope->add_type("void",   void_type);
         root_scope->add_type("string", string_type);
 
 

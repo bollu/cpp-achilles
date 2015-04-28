@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
 
     std::cout << pretty_print(*ast);
 
-    // generate_llvm_code(*ast, ctx);
+    generate_llvm_code(*ast, ctx);
 
     return 0;
 }
