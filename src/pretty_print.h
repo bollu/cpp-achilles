@@ -93,9 +93,10 @@ void ASTPrettyPrinter::inspect_prefix_expr(ASTPrefixExpr& prefix) {
 
 void ASTPrettyPrinter::inspect_statement(ASTStatement& statement) {
     out << "\n";
+	out << "|";
     this->print_indent();
     statement.inner->dispatch(*this);
-    out << ";";
+    out << "|;";
 }
 
 void ASTPrettyPrinter::inspect_fn_definition(ASTFunctionDefinition& fn_defn) {
@@ -121,7 +122,9 @@ void ASTPrettyPrinter::inspect_fn_definition(ASTFunctionDefinition& fn_defn) {
 
     out << ")" << " -> ";
     fn_defn.return_type->dispatch(*this);
-    fn_defn.body->dispatch(*this);
+	if (fn_defn.body) {
+		fn_defn.body->dispatch(*this);
+	};
 }
 
 void ASTPrettyPrinter::inspect_variable_definition(ASTVariableDefinition& defn)
@@ -136,18 +139,20 @@ void ASTPrettyPrinter::inspect_variable_definition(ASTVariableDefinition& defn)
 }
 
 void ASTPrettyPrinter::inspect_fn_call(ASTFunctionCall& fn_call) {
-    fn_call.name->dispatch(*this);
-    out << "(";
-    int num_commas = fn_call.params.size() - 1;
+	fn_call.name->dispatch(*this);
+	out << "(";
+	int num_commas = fn_call.params.size() - 1;
 
-    for (auto param : fn_call.params) {
-        param->dispatch(*this);
+	for (auto param : fn_call.params) {
+		param->dispatch(*this);
 
-        if (num_commas > 0) {
-            out << ", ";
-            num_commas--;
-        }
-    }
-    out << ")";
-    out << "@[" << *fn_call.ts_data->type << "]";
+		if (num_commas > 0) {
+			out << ", ";
+			num_commas--;
+		}
+	}
+	out << ")";
+	if (fn_call.ts_data) {
+		out << "@" << *fn_call.ts_data->type << "";
+	}
 }

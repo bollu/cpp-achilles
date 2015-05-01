@@ -2,6 +2,7 @@
 #define __STDC_LIMIT_MACROS
 #define __STDC_CONSTANT_MACROS
 
+
 #include "llvm/IR/Verifier.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/IRBuilder.h"
@@ -18,147 +19,216 @@
 
 using namespace llvm;
 
+llvm::Type* llvm_achilles_to_llvm_type(const TSType &type, LLVMContext &ctx) {
+	switch (type.variant) {
+		case TSType::Variant::Float32:
+			return Type::getFloatTy(ctx);
+			break;
+	case TSType::Variant::Int32:
+		return Type::getInt32Ty(ctx);
+		break;
+	case TSType::Variant::Void:
+		return Type::getVoidTy(ctx);
+		break;
+
+	case TSType::Variant::Function: {
+		std::vector<Type*> llvm_arg_types;
+		for (auto arg : type.func_data->args) {
+			llvm_arg_types.push_back(llvm_achilles_to_llvm_type(*arg, ctx));
+		};
+
+		Type* llvm_return_type = llvm_achilles_to_llvm_type(*type.func_data->return_type, ctx);
+		const bool is_var_arg = false;
+		FunctionType *func_type = FunctionType::get(llvm_return_type, llvm_arg_types, is_var_arg);
+
+		return func_type;
+	}
+		
+	default:
+		assert("unable to convert achilles type to llvm type");
+	}
+	return nullptr;
+}
+
+llvm::Function* llvm_create_extern_linkage(ASTFunctionDefinition &fn_defn, llvm::LLVMContext &ctx, llvm::Module *module) {
+
+	const std::string &name = *fn_defn.fn_name.value.ptr_s;
+	llvm::FunctionType* type = reinterpret_cast<llvm::FunctionType*>(llvm_achilles_to_llvm_type(*fn_defn.ts_data->type, ctx));
+    return Function::Create(type, Function::ExternalLinkage, name, module);
+
+};
 
 struct LLVMCodeGenerator : public IASTVisitor {
-    llvm::Module *module;
-    IRBuilder<>Builder;
+	llvm::Module *module;
+	llvm::LLVMContext &ctx;
+	IRBuilder<>Builder;
 
 public:
 
-    LLVMCodeGenerator(LLVMContext& context, Module *module) : Builder(context),
-        module(module) {}
+	LLVMCodeGenerator(LLVMContext& context, Module *module) : ctx(context), Builder(context),
+		module(module) {}
 
-    virtual void inspect_root(ASTRoot& root) {
-        for (auto statement: root.children) {
-            this->get_value_for_ast(*statement);
-        }
-    }
+	virtual void inspect_root(ASTRoot& root) {
+		for (auto statement : root.children) {
+			this->get_value_for_ast(*statement);
+		}
+	}
 
-    Value* get_value_for_ast(IAST& ast) {
-        switch (ast.type) {
-        case ASTType::Literal:
-            return get_value_for_literal(dynamic_cast<ASTLiteral&>(ast));
+	llvm::Value* get_value_for_ast(IAST& ast) {
+		switch (ast.type) {
+		case ASTType::Literal:
+			return get_value_for_literal(dynamic_cast<ASTLiteral&>(ast));
 
-        case ASTType::InfixExpr:
-            return this->get_value_for_infix_expr(dynamic_cast<ASTInfixExpr&>(
-                                                      ast));
+		case ASTType::InfixExpr:
+			return this->get_value_for_infix_expr(dynamic_cast<ASTInfixExpr&>(ast));
 
-        case ASTType::FunctionCall:
-            return this->get_value_for_func_call(dynamic_cast<ASTFunctionCall&>(
-                                                     ast));
+		case ASTType::FunctionCall:
+			return this->get_value_for_func_call(dynamic_cast<ASTFunctionCall&>(ast));
 
-        default:
+		case ASTType::Statement: {
+			ASTStatement &stmt = dynamic_cast<ASTStatement&>(ast);
+			return this->get_value_for_ast(*stmt.inner);
+		}
 
-            /*assert(false
-               && "unknown AST type");*/
-            std::stringstream error;
-            error << "unknown ast type to codegen:\n";
-            pretty_print_to_stream(ast, error);
-            throw std::runtime_error(error.str());
-        }
-    }
+		case ASTType::FunctionDefinition: {
+			return this->get_value_for_function_defn(dynamic_cast<ASTFunctionDefinition&>(ast));
+		}
+		case ASTType::PrefixExpr: {
+			return this->get_value_for_prefix_expr(dynamic_cast<ASTPrefixExpr&>(ast));
+		}
+		default:
 
-    Value* get_value_for_infix_expr(ASTInfixExpr& expr) {
-        Value *left = get_value_for_ast(*expr.left);
-        Value *right = get_value_for_ast(*expr.right);
+			std::stringstream error;
+			error << "unknown ast type to codegen:\n";
+			pretty_print_to_stream(ast, error);
+			throw std::runtime_error(error.str());
+		}
+	}
 
-        switch (expr.op.type) {
-        case TokenType::Plus:
-            return Builder.CreateFAdd(left,  right, "addtmp");
+	llvm::Function *get_value_for_function_defn(ASTFunctionDefinition &fn_defn){
+		if (fn_defn.body) {
+			assert(false && "unimplimented");
+		}
+        //this is a forward decl.
+        //HACK: for now, assume *all* forward decls to be externs -_-
+		else {
+			Function *f = llvm_create_extern_linkage(fn_defn, this->ctx, this->module);
+			return f;
+		};
+	
+	}
+	Value* get_value_for_infix_expr(ASTInfixExpr& expr) {
+		Value *left = get_value_for_ast(*expr.left);
+		Value *right = get_value_for_ast(*expr.right);
 
-        case TokenType::Minus:
-            return Builder.CreateFSub(left,  right, "subtmp");
+		switch (expr.op.type) {
+		case TokenType::Plus:
+			return Builder.CreateFAdd(left, right, "addtmp");
 
-        case TokenType::Multiply:
-            return Builder.CreateFMul(left,  right, "multmp");
+		case TokenType::Minus:
+			return Builder.CreateFSub(left, right, "subtmp");
 
-        case TokenType::Divide:
-            return Builder.CreateFDiv(left,  right, "divtmp");
+		case TokenType::Multiply:
+			return Builder.CreateFMul(left, right, "multmp");
 
-        default:
-            assert(false
-                   && "unknown infix expression");
-        }
-    }
+		case TokenType::Divide:
+			return Builder.CreateFDiv(left, right, "divtmp");
 
-    Value* get_value_for_func_call(ASTFunctionCall& func_call) {
-        if (func_call.name->type != ASTType::Literal) {
-            std::stringstream error;
-            error << "function call name is not a string";
-            error << pretty_print(func_call);
-            throw std::runtime_error(error.str());
-        }
-
-        std::string fn_name =
-            *dynamic_cast<ASTLiteral&>(*func_call.name).token.value.ptr_s;
-
-
-        Function *called_fn = module->getFunction(fn_name);
-
-        if (!called_fn) {
-            std::stringstream error;
-            error << "undefined function: ";
-            error << fn_name;
-            error << func_call.position;
-            throw std::runtime_error(error.str());
+		default:
+			assert(false && "unknown infix expression");
+		}
+		return nullptr;
+	}
 
 
-            if (func_call.params.size() != called_fn->arg_size()) {
-                std::stringstream error;
-                error << "different argument list sizes:\n";
-                error << pretty_print(func_call);
-                throw std::runtime_error(error.str());
-            }
-            std::vector<Value *>args;
+	Value *get_value_for_prefix_expr(ASTPrefixExpr& prefix_expr) {
+		switch (prefix_expr.op.type) {
+		case TokenType::Minus:
+			return nullptr;
+		default:
+			assert(false && "unknown prefx expr");
+			return nullptr;
+		}
+	}
 
-            for (unsigned i = 0; i < func_call.params.size(); ++i) {
-                args.push_back(this->get_value_for_ast(*func_call.params[i]));
-            }
 
-            return Builder.CreateCall(called_fn, args, "calltmp");
-        }
-        return nullptr;
-    }
+	Value* get_value_for_func_call(ASTFunctionCall& func_call) {
+		if (func_call.name->type != ASTType::Literal) {
+			std::stringstream error;
+			error << "function call name is not a string";
+			error << pretty_print(func_call);
+			throw std::runtime_error(error.str());
+		}
 
-    Value* get_value_for_literal(ASTLiteral& literal) {
-        switch (literal.token.type) {
-        case TokenType::LiteralInt:
-        {
-            float val = *literal.token.value.ptr_i;
-            return ConstantFP::get(getGlobalContext(), APFloat(val));
-        }
+		std::string fn_name = *dynamic_cast<ASTLiteral&>(*func_call.name).token.value.ptr_s;
 
-        case TokenType::LiteralFloat:
-        {
-            float val = *literal.token.value.ptr_f;
-            return ConstantFP::get(getGlobalContext(), APFloat(val));
-        }
+		Function *called_fn = module->getFunction(fn_name);
 
-        case TokenType::Identifier:
-        {
-            std::string& name = *literal.token.value.ptr_s;
-            assert(false
-                   && "locals are unhandled for now");
+		if (!called_fn) {
+			std::stringstream error;
+			error << "undefined function: ";
+			error << fn_name;
+			error << func_call.position;
+			throw std::runtime_error(error.str());
+		}
 
-            // literal.ts_data->scope->get_variable()
-        }
 
-        default:
-            assert(false
-                   && "cannot return llvm value");
-            return nullptr;
-        }
-    }
+		if (func_call.params.size() != called_fn->arg_size()) {
+			std::stringstream error;
+			error << "different argument list sizes:\n";
+			error << pretty_print(func_call);
+			throw std::runtime_error(error.str());
+		}
+		std::vector<Value *>args;
+
+		for (unsigned i = 0; i < func_call.params.size(); ++i) {
+			args.push_back(this->get_value_for_ast(*func_call.params[i]));
+		}
+
+		return Builder.CreateCall(called_fn, args, "calltmp");
+		
+		return nullptr;
+	}
+
+	Value* get_value_for_literal(ASTLiteral& literal) {
+		switch (literal.token.type) {
+		case TokenType::LiteralInt:
+		{
+			float val = *literal.token.value.ptr_i;
+			return ConstantFP::get(getGlobalContext(), APFloat(val));
+		}
+
+		case TokenType::LiteralFloat:
+		{
+			float val = *literal.token.value.ptr_f;
+			return ConstantFP::get(getGlobalContext(), APFloat(val));
+		}
+
+		case TokenType::Identifier:
+		{
+			std::string& name = *literal.token.value.ptr_s;
+			assert(false
+				&& "locals are unhandled for now");
+
+			// literal.ts_data->scope->get_variable()
+		}
+
+		default:
+			assert(false
+				&& "cannot return llvm value");
+			return nullptr;
+		}
+	}
 };
 
 llvm::Module* generate_llvm_code(IAST& root, TSContext& context) {
-    LLVMContext& ctx = getGlobalContext();
-    Module *module = new Module("main_module", ctx);
-    LLVMCodeGenerator code_genner(ctx, module);
+	LLVMContext& ctx = getGlobalContext();
+	Module *module = new Module("main_module", ctx);
+	LLVMCodeGenerator code_genner(ctx, module);
 
-    code_genner.inspect_root(dynamic_cast<ASTRoot&>(root));
+	code_genner.inspect_root(dynamic_cast<ASTRoot&>(root));
 
-    std::cout << "\n-------\n\nmodule dump: \n";
-    module->dump();
-    return module;
+	std::cout << "\n-------\n\nmodule dump: \n";
+	module->dump();
+	return module;
 }

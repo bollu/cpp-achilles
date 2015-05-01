@@ -23,7 +23,7 @@ public:
         String,
         Int,     // abstract int to be unified
         Float,   // abstract float to be unified
-        Float32, // abstract float to be unified
+        Float32,
         Int32,
         Function,
     } variant;
@@ -81,10 +81,10 @@ public:
             if (this->parent != nullptr) {
                 return this->parent->get_type(name);
             } else {
-                assert(false
-                       && "do not have type");
+                assert(false && "do not have type");
             }
-        }
+		}
+		return nullptr;
     }
 
     const TSVariable* get_variable(const std::string& name) {
@@ -96,11 +96,12 @@ public:
             if (this->parent != nullptr) {
                 return this->parent->get_variable(name);
             } else {
-                assert(false
-                       && "do not have variable");
+                assert(false && "do not have variable");
             }
         }
-    }
+		return nullptr;
+
+	}
 
     bool has_type(const std::string& name) {
         auto it = this->typename_to_type.find(name);
@@ -151,7 +152,7 @@ private:
     std::map<std::string, const TSVariable *>varname_to_var;
 
 
-    friend class TSContext;
+    friend struct TSContext;
 };
 
 struct TSContext
@@ -174,9 +175,9 @@ public:
 
         root_scope->add_variable("sin",
                                  new TSVariable("sin", sin_type, nullptr));
-        root_scope->add_type("i32",    i32_type);
-        root_scope->add_type("f32",    f32_type);
-        root_scope->add_type("void",   void_type);
+        root_scope->add_type("i32", i32_type);
+        root_scope->add_type("f32", f32_type);
+        root_scope->add_type("void", void_type);
         root_scope->add_type("string", string_type);
 
 
@@ -198,7 +199,7 @@ struct TSASTData
     TSScope *scope;
     const TSType  *type;
 
-    TSASTData(TSScope *scope) : scope(scope), type(nullptr) {}
+    TSASTData(TSScope *scope, const TSType *type) : scope(scope), type(type) {}
 };
 
 TSContext type_system_type_check(std::shared_ptr<IAST>root);
