@@ -301,20 +301,23 @@ class FunctionDefinitionPrefix : public IParserPrefix {
 		parser.cursor.expect(TokenType::CloseBracket);
 
 		parser.cursor.expect(TokenType::ThinArrow);
-		std::shared_ptr<IAST>return_type = parser.parse(Precedence::Lowest);
+
+        //we may not have a block after this
+        //so let's take things till a semicolon
+		std::shared_ptr<IAST>return_type = parser.parse(Precedence::Statement);
 
 
         //if a block exists, parse it. otherwise, set block to null
 		std::shared_ptr<IAST> block = nullptr;
         
-		//if (parser.cursor.get().type == TokenType::OpenCurlyBracket){
+		if (parser.cursor.get().type == TokenType::OpenCurlyBracket){
             //we use precedence as statement so that the (;) is consumed
             //by the _entire_ fn_defn and not the block.
             //ie ->
 		    //we want: stmt(fn_defn{args, return_type, block})
             //rather than: fn_defn{args, return_type, **stmt(block)** }
 			block = parser.parse(Precedence::Statement);
-		//}
+		}
 
 		position.end = parser.cursor.get_current_range().end;
 

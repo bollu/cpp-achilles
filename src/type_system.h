@@ -36,6 +36,8 @@ public:
     TSType(const TSFunctionTypeData func_data,
            PositionRange            *decl_pos);
 };
+
+
 static const TSType *int_type = new TSType(TSType::Variant::Int, nullptr);
 static const TSType *float_type = new TSType(TSType::Variant::Float, nullptr);
 static const TSType *string_type = new TSType(TSType::Variant::String, nullptr);

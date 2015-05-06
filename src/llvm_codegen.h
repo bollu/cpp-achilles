@@ -19,10 +19,12 @@
 
 using namespace llvm;
 
+
 llvm::Type* llvm_achilles_to_llvm_type(const TSType &type, LLVMContext &ctx) {
 	switch (type.variant) {
 		case TSType::Variant::Float32:
-			return Type::getFloatTy(ctx);
+			return Type::getDoubleTy(ctx);
+			//return Type::getFloatTy(ctx);
 			break;
 	case TSType::Variant::Int32:
 		return Type::getInt32Ty(ctx);
@@ -58,10 +60,21 @@ llvm::Function* llvm_create_extern_linkage(ASTFunctionDefinition &fn_defn, llvm:
 
 };
 
+struct LLVMASTData {
+	llvm::Value* val;
+	llvm::Function *fn;
+
+	LLVMASTData(llvm::Value &val) : val(&val), fn(nullptr) {};
+};
+
 struct LLVMCodeGenerator : public IASTVisitor {
 	llvm::Module *module;
 	llvm::LLVMContext &ctx;
 	IRBuilder<>Builder;
+    
+    //map variables to values
+	std::map<const TSVariable *, llvm::Value *> var_to_value_map;
+
 
 public:
 
@@ -90,24 +103,61 @@ public:
 			return this->get_value_for_ast(*stmt.inner);
 		}
 
+		case ASTType::Block: {
+			ASTBlock &block = dynamic_cast<ASTBlock&>(ast);
+			for (auto stmt : block.statements) {
+				//HACK: this will only work for the _fist_ call.
+				return this->get_value_for_ast(*stmt);
+			}
+			//return this->get_value_for_ast(*stmt.inner);
+			break;
+		}
 		case ASTType::FunctionDefinition: {
 			return this->get_value_for_function_defn(dynamic_cast<ASTFunctionDefinition&>(ast));
 		}
 		case ASTType::PrefixExpr: {
 			return this->get_value_for_prefix_expr(dynamic_cast<ASTPrefixExpr&>(ast));
 		}
-		default:
 
+		default:
 			std::stringstream error;
 			error << "unknown ast type to codegen:\n";
 			pretty_print_to_stream(ast, error);
 			throw std::runtime_error(error.str());
 		}
+
+		assert(false && "should not have gotten here");
 	}
 
 	llvm::Function *get_value_for_function_defn(ASTFunctionDefinition &fn_defn){
 		if (fn_defn.body) {
-			assert(false && "unimplimented");
+			Function *f = llvm_create_extern_linkage(fn_defn, this->ctx, this->module);
+            BasicBlock *BB = BasicBlock::Create(getGlobalContext(), "entry", f);
+            Builder.SetInsertPoint(BB);
+            
+			unsigned index = 0;
+			for (Function::arg_iterator arg_val_iter = f->arg_begin(); index != fn_defn.args.size();
+				 ++arg_val_iter, ++index) {
+
+				ASTLiteral &arg_ast = dynamic_cast<ASTLiteral&>(*fn_defn.args[index].first);
+				std::string arg_name = *arg_ast.token.value.ptr_s;
+				arg_val_iter->setName(arg_name);
+
+                //this typecast is mysterious
+				Value *arg_val = arg_val_iter;
+
+				const TSVariable *indexing_var = arg_ast.ts_data->scope->get_variable(arg_name);
+				assert(this->var_to_value_map.find(indexing_var) == this->var_to_value_map.end());
+				this->var_to_value_map[indexing_var] = arg_val;
+
+			}
+
+			Value *return_value = this->get_value_for_ast(*fn_defn.body);
+            Builder.CreateRet(return_value);
+            
+			verifyFunction(*f);
+			return f;
+
 		}
         //this is a forward decl.
         //HACK: for now, assume *all* forward decls to be externs -_-
@@ -117,6 +167,7 @@ public:
 		};
 	
 	}
+
 	Value* get_value_for_infix_expr(ASTInfixExpr& expr) {
 		Value *left = get_value_for_ast(*expr.left);
 		Value *right = get_value_for_ast(*expr.right);
@@ -172,7 +223,6 @@ public:
 			throw std::runtime_error(error.str());
 		}
 
-
 		if (func_call.params.size() != called_fn->arg_size()) {
 			std::stringstream error;
 			error << "different argument list sizes:\n";
@@ -207,10 +257,13 @@ public:
 		case TokenType::Identifier:
 		{
 			std::string& name = *literal.token.value.ptr_s;
-			assert(false
-				&& "locals are unhandled for now");
+			const TSVariable *id_var = literal.ts_data->scope->get_variable(name);
+			auto it = this->var_to_value_map.find(id_var);
 
-			// literal.ts_data->scope->get_variable()
+			assert(it != this->var_to_value_map.end());
+            
+			Value *val = it->second;
+			return val;
 		}
 
 		default:
@@ -223,7 +276,7 @@ public:
 
 llvm::Module* generate_llvm_code(IAST& root, TSContext& context) {
 	LLVMContext& ctx = getGlobalContext();
-	Module *module = new Module("main_module", ctx);
+	Module *module = new Module("marg_val_itern_module", ctx);
 	LLVMCodeGenerator code_genner(ctx, module);
 
 	code_genner.inspect_root(dynamic_cast<ASTRoot&>(root));

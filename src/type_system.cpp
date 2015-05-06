@@ -2,7 +2,7 @@
 #include "ast.h"
 #include <sstream>
 #include <iostream>
-
+#include "pretty_print.h"
 /*
    TSType *int_type = new TSType(TSType::Variant::Int, nullptr);
    TSType *float_type = new TSType(TSType::Variant::Float, nullptr);
@@ -166,7 +166,7 @@ struct TSDataCreator : public IASTVisitor {
 	virtual void inspect_block(ASTBlock& block) {
 		TSScope *block_scope = ctx.create_child_scope(this->scope);
 		TSDataCreator block_tsdata_creator(ctx, block_scope);
-        
+
 		TSDataCreator::setup_block(block, block_tsdata_creator, *this);
 	};
 
@@ -175,9 +175,24 @@ struct TSDataCreator : public IASTVisitor {
 		statement.inner->dispatch(*this);
 	};
 
-    //we don't need to do anything for these. just let the
-    //default instance of ASTVisitor which "does the right thing"
-	//virtual void inspect_infix_expr(ASTInfixExpr& infix){};
+	//we don't need to do anything for these. just let the
+	//default instance of ASTVisitor which "does the right thing"
+	virtual void inspect_infix_expr(ASTInfixExpr& infix){
+		infix.left->dispatch(*this);
+		infix.right->dispatch(*this);
+        
+        //arith
+		if (infix.op.type == TokenType::Plus ||
+			infix.op.type == TokenType::Minus ||
+			infix.op.type == TokenType::Multiply ||
+			infix.op.type == TokenType::Divide) {
+
+			//HACK!
+			const TSType *unified_type = f32_type;
+			infix.ts_data = std::make_shared<TSASTData>(scope, unified_type);
+		};
+	};
+
 	//virtual void inspect_prefix_expr(ASTPrefixExpr& prefix){};
 
 	virtual void inspect_fn_definition(ASTFunctionDefinition& fn_defn) {
@@ -186,24 +201,32 @@ struct TSDataCreator : public IASTVisitor {
 		TSScope *fn_scope = ctx.create_child_scope(this->scope);
 		TSDataCreator fn_defn_data_creator(this->ctx, fn_scope);
 
-        //fill in the args
+
+		std::vector<const TSType*> arg_types;
+		//fill in the args
 		for (auto arg : fn_defn.args) {
 			ASTLiteral &arg_name = *reinterpret_cast<ASTLiteral*>(arg.first.get());
 			ASTLiteral &type_name = *reinterpret_cast<ASTLiteral*>(arg.second.get());
 
-			const TSType *type = TSDataCreator::get_type_for_literal(type_name, fn_scope);
-			TSDataCreator::setup_variable_definition(arg_name, type, fn_scope);
+			const TSType *arg_type = TSDataCreator::get_type_for_literal(type_name, fn_scope);
+			arg_types.push_back(arg_type);
+			TSDataCreator::setup_variable_definition(arg_name, arg_type, fn_scope);
 		}
 
-       //now type the block
-		ASTBlock &fn_body = *reinterpret_cast<ASTBlock*>(fn_defn.body.get());
-		TSDataCreator::setup_block(fn_body, fn_defn_data_creator, *this);
-
-        //type the return type
+		//it need not have a body, could be a prototype
+		if (fn_defn.body) {
+			//now type the block
+			ASTBlock &fn_body = *reinterpret_cast<ASTBlock*>(fn_defn.body.get());
+			TSDataCreator::setup_block(fn_body, fn_defn_data_creator, *this);
+		}
+		//type the return type
 		ASTLiteral &return_name = *reinterpret_cast<ASTLiteral*>(fn_defn.return_type.get());
 		const TSType *return_type = TSDataCreator::get_type_for_literal(return_name, this->scope);
 		fn_defn.return_type->ts_data = std::make_shared<TSASTData>(this->scope, return_type);
 
+		//construct fn type
+		const TSType *fn_type = new TSType(TSFunctionTypeData(arg_types, return_type), &fn_defn.position);
+		fn_defn.ts_data = std::make_shared<TSASTData>(this->scope, fn_type);
 	};
 
 	virtual void inspect_fn_call(ASTFunctionCall& fn_call) {
@@ -227,26 +250,117 @@ struct TSDataCreator : public IASTVisitor {
 	};
 
 	virtual void inspect_variable_definition(ASTVariableDefinition& variable_defn) {
-		variable_defn.ts_data = std::make_shared<TSASTData>(this->scope, void_type);
-		   
-        //find the type of the "type" part of type definition. and give it over to the AST.
+
+		//find the type of the "type" part of type definition. and give it over to the AST.
 		ASTLiteral &type_name = *reinterpret_cast<ASTLiteral*>(variable_defn.type.get());
 		const TSType *type = TSDataCreator::get_type_for_literal(type_name, this->scope);
 
 		variable_defn.type->ts_data = std::make_shared<TSASTData>(this->scope, type);
 		variable_defn.name->ts_data = std::make_shared<TSASTData>(this->scope, type);
-        
-        //create a new variable, bring it into scope <3
+
+		//create a new variable, bring it into scope <3
 		ASTLiteral &variable_name = *reinterpret_cast<ASTLiteral*>(variable_defn.name.get());
 		TSDataCreator::setup_variable_definition(variable_name, type, this->scope);
+
+		variable_defn.ts_data = std::make_shared<TSASTData>(this->scope, type);
 	};
-    
+
+};
+
+struct TSArithTypeChecker : public IASTVisitor {
+	static bool is_number(const TSType *type) {
+		return type == i32_type ||
+			type == f32_type;
+	}
+
+	static TSType* coerce_safely_to(const TSType *to, const TSType *from) {
+		assert(is_number(to) && is_number(from));
+
+		return nullptr;
+	};
+
+	virtual void inspect_infix_expr(ASTInfixExpr& infix) {
+		infix.left->dispatch(*this);
+		infix.right->dispatch(*this);
+
+		if (infix.op.type == TokenType::Plus ||
+			infix.op.type == TokenType::Minus ||
+			infix.op.type == TokenType::Multiply ||
+			infix.op.type == TokenType::Divide) {
+
+			if (!infix.left->ts_data) {
+				std::cout << "\n" << infix.position << "\nleft: " << infix.left->position << "\nright: " << infix.right->position;
+				std::cout << "\n" <<pretty_print(*infix.left);
+				infix.left->dispatch(*this);
+			}
+			assert(infix.left->ts_data);
+
+			if (!is_number(infix.left->ts_data->type)) {
+				std::stringstream error;
+				error << "expected a number as a left operand to " << infix.op.type;
+				error << infix.left->position << "expected number";
+				error << "\nreceived: " << *infix.left->ts_data->type;
+
+				throw std::runtime_error(error.str());
+			}
+
+			if (!is_number(infix.right->ts_data->type)) {
+				std::stringstream error;
+				error << "expected a number as a right operand to " << infix.op.type;
+				error << infix.right->position << "expected number";
+				error << "\nreceived: " << *infix.right->ts_data->type;
+
+				throw std::runtime_error(error.str());
+			}
+
+
+		};
+	};
+
+	//TO IMPLEMENT
+	virtual void inspect_prefix_expr(ASTPrefixExpr& prefix) {
+		if (prefix.op.type == TokenType::Minus) {
+			if (!is_number(prefix.expr->ts_data->type)) {
+				std::stringstream error;
+				error << "expected number for unary -";
+				error << prefix.position;
+
+				throw std::runtime_error(error.str());
+			}
+		}
+	};
+};
+
+struct TSEqualityTypeChecker : public IASTVisitor {
+	virtual void inspect_infix_expr(ASTInfixExpr& infix){
+		if (infix.op.type == TokenType::Equals) {
+
+			if (infix.left->ts_data->type != infix.right->ts_data->type) {
+				std::stringstream error;
+				error << "types do not match on \"=\" |";
+				error << "left: " << *infix.left->ts_data->type;
+				error << " | right: " << *infix.right->ts_data->type;
+
+				error << infix.left->position << " type: " << *infix.left->ts_data->type;
+				error << infix.right->position << " type: " << *infix.right->ts_data->type;
+
+				throw std::runtime_error(error.str());
+			}
+
+		}
+	};
 };
 
 TSContext type_system_type_check(std::shared_ptr<IAST>root) {
 	TSContext ctx;
 	TSDataCreator ts_data_creator(ctx, ctx.get_root_scope());
 	root->dispatch(ts_data_creator);
+
+	TSArithTypeChecker ts_arith_checker;
+	root->dispatch(ts_arith_checker);
+
+	TSEqualityTypeChecker equality_checker;
+	root->dispatch(equality_checker);
 
 	return ctx;
 }

@@ -15,6 +15,7 @@ class ASTStatement;
 class ASTFunctionDefinition;
 class ASTFunctionCall;
 class ASTVariableDefinition;
+class LLVMASTData;
 
 enum class ASTType {
 	PrefixExpr,
@@ -35,12 +36,13 @@ protected:
 
 	IAST(ASTType ast_type, PositionRange position) : type(ast_type), position(
 		position),
-		ts_data(nullptr) {}
+		ts_data(nullptr), llvm_data(nullptr) {}
 
 public:
 
 	PositionRange position;
 	std::shared_ptr<TSASTData>ts_data;
+	std::shared_ptr<LLVMASTData>llvm_data;
 	ASTType type;
 
 	// calls the correct version of the visit on the visitor

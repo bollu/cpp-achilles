@@ -1,21 +1,6 @@
-fn foo(y : unknowntype, z : f32) -> i32 {
-	let x : i32 = 20;
-
-};
-
-
-{
-	let x : i32 = sin(30);
-	100 + 200 + "string" + sin(100);
+fn runner(x : i32) -> i32 {
+    10 + 20 - 100 - x;
 }
 
-{
-	let x : i32 = 20;
-	{
-		{let y : i32 = 40;}
-		let y : i32 = 40;
-	}
-	let y : i32 = 40;
-}	
 
-10 + 20;
+
